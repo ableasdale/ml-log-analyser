@@ -9,6 +9,7 @@ import javax.ws.rs.core.UriBuilder;
 
 import com.marklogic.analyser.resources.BaseResource;
 import com.marklogic.analyser.util.Consts;
+import com.sun.jersey.freemarker.FreemarkerViewProcessor;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,9 +44,7 @@ public class Server {
 	 */
 	public static void main(String[] args) throws IOException {
 
-
 		// PropertiesMap.getInstance().put("path", args[0]);
-
 		// HTTP server invocation code below
 		HttpServer httpServer = startServer();
 		LOG.info("HTTP Application com.marklogic.analyser.Server Ready: " + BASE_URI);
@@ -61,9 +60,9 @@ public class Server {
 		LOG.info("Starting Grizzly (HTTP Service).");
 		ResourceConfig rc = new PackagesResourceConfig(BaseResource.class
 				.getPackage().getName());
-	/*	rc.getProperties().put(
+		rc.getProperties().put(
 				FreemarkerViewProcessor.FREEMARKER_TEMPLATES_BASE_PATH,
-				"freemarker");*/
+				"freemarker");
 		//rc.getProperties().put(com.marklogic.analyser.util.Consts.SOURCE_FILE_TO_PROCESS, path);
 		rc.getFeatures().put(ResourceConfig.FEATURE_IMPLICIT_VIEWABLES, true);
 		// TODO - not sure if both template base paths need to be "put" but this

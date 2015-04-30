@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Collection;
 
 /**
@@ -20,11 +21,11 @@ public class Test {
 
     public static void main(String[] args) throws IOException {
 
-        Logger LOG = LoggerFactory.getLogger("com.marklogic.analyser.Test");
+        Logger LOG = LoggerFactory.getLogger(Test.class);
         FileProcessManager fpm = new FileProcessManager();
 
         // traverse a directory
-        LOG.info("Traversing Directory: " + Consts.DIRECTORY_PATH);
+        LOG.info(MessageFormat.format("Traversing Directory: {0}", Consts.DIRECTORY_PATH));
 
         File file = new File(Consts.DIRECTORY_PATH);
         Collection<File> files = FileUtils.listFiles(file, null, true);

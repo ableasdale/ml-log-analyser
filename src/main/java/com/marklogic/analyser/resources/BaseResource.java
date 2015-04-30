@@ -2,6 +2,8 @@ package com.marklogic.analyser.resources;
 
 import static java.text.MessageFormat.format;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.text.MessageFormat;
 import java.util.*;
@@ -11,6 +13,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 //import com.xmlmachines.pstack.beans.SearchResults;
+import com.marklogic.analyser.FileProcessManager;
+import com.marklogic.analyser.util.Consts;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -133,4 +138,22 @@ public class BaseResource {
 		return Response.status(Response.Status.OK)
 				.entity(new Viewable(templateName, model)).build();
 	}
+
+
+    protected void analysePath(String path){
+        // This should be a singleton!
+        FileProcessManager fpm = new FileProcessManager();
+        File file = new File(path);
+        Collection<File> files = FileUtils.listFiles(file, null, true);
+        for (File file2 : files){
+            if(file2.getName().startsWith("ErrorLog")){
+                LOG.info(file2.getName());
+                try {
+                    fpm.processLog(file2);
+                } catch (IOException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            }
+        }
+    }
 }

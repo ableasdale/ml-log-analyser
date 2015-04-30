@@ -1,0 +1,1 @@
+<footer><p>MarkLogic ErrorLog Analyser - v0.1 - (MMXV)</p></footer>
