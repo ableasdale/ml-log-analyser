@@ -40,7 +40,7 @@ public class FileProcessManager {
 
                 LOG.info("INDEX: " + String.valueOf(start));
 
-                LOG.info("Restart detected - displaying the following five lines after restart and the line before..");
+                LOG.info("Restart detected - displaying the following "+ Consts.RESTART_TOTAL_LINES + " lines after restart and lines before..");
                 if (start < 2) {
 
                     idx = start - 3;
@@ -48,7 +48,7 @@ public class FileProcessManager {
                     idx = 1;
                 }
 
-                for (int i = 0; i < 10; i++){
+                for (int i = 0; i < Consts.RESTART_TOTAL_LINES; i++){
                     LOG.info(lines.get(idx));
                     idx++;
                 }
