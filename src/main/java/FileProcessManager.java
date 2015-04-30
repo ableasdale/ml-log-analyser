@@ -52,6 +52,12 @@ public class FileProcessManager {
                 }
             }
 
+            if (l.contains("Warning:")) {
+                LOG.info("* Warning * : "+l);
+            }
+            if (l.contains("* Critical * : "+l)) {
+                LOG.info("Critical");
+            }
             // Exception keywords
             for (String j : Consts.KEYWORDS) {
                 if(l.contains(j)){
@@ -66,10 +72,8 @@ public class FileProcessManager {
         }
 
         //System.out.println("debug");
-        for (String s : keywordOccurrences.keySet()) {
-            LOG.info("Total number of " + s + " messages reported: " + String.valueOf(keywordOccurrences.get(s)) );
-        }
-
+        for (String s : keywordOccurrences.keySet())
+            LOG.info(MessageFormat.format("Total number of {0} messages reported: {1}", s, String.valueOf(keywordOccurrences.get(s))));
     }
 
     public String readFile(String path, Charset encoding) throws IOException {
