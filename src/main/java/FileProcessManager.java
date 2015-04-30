@@ -9,6 +9,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,15 +35,12 @@ public class FileProcessManager {
 
         for (String l : lines)  {
             if (l.contains("Starting MarkLogic")) {
-
                 int start = lines.indexOf(l);
                 int idx;
+                LOG.debug(MessageFormat.format("Array index for restart message: {0}", String.valueOf(start)));
+                LOG.info(MessageFormat.format("Restart detected - displaying the following {0} lines after restart and lines before..", Consts.RESTART_TOTAL_LINES));
 
-                LOG.info("INDEX: " + String.valueOf(start));
-
-                LOG.info("Restart detected - displaying the following "+ Consts.RESTART_TOTAL_LINES + " lines after restart and lines before..");
                 if (start < 2) {
-
                     idx = start - 3;
                 }   else {
                     idx = 1;
@@ -58,7 +56,6 @@ public class FileProcessManager {
             for (String j : Consts.KEYWORDS) {
                 if(l.contains(j)){
                     if (keywordOccurrences.containsKey(j)){
-
                         keywordOccurrences.put(j, (keywordOccurrences.get(j) + 1));
                     } else {
                         keywordOccurrences.put(j, 1);
