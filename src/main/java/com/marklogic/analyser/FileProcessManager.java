@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public class FileProcessManager {
 
-    Logger LOG = LoggerFactory.getLogger("com.marklogic.analyser.FileProcessManager");
+    Logger LOG = LoggerFactory.getLogger(FileProcessManager.class);
 
     public void processLog(File file) throws IOException {
         LOG.info("Processing ErrorLog file: " + file.getName());
@@ -54,7 +54,9 @@ public class FileProcessManager {
                     idx++;
                 }
             }
-
+            if(l.contains("Event:")) {
+                LOG.info("* Event * : "+l);
+            }
             if (l.contains("Warning:")) {
                 LOG.info("* Warning * : "+l);
             }

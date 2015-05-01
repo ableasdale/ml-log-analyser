@@ -14,6 +14,49 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" />
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
+<script>
+    $(function () {
+
+        'use strict';
+
+        // UPLOAD CLASS DEFINITION
+        // ======================
+        console.log("here");
+        var dropZone = document.getElementById('drop-zone');
+        var uploadForm = document.getElementById("js-upload-form");
+
+        var startUpload = function(files) {
+            console.log(files)
+        }
+
+        uploadForm.addEventListener("submit", function(e) {
+            var uploadFiles = document.getElementById('js-upload-files').files;
+            e.preventDefault()
+
+            startUpload(uploadFiles)
+        })
+
+        dropZone.ondrop = function(e) {
+            e.preventDefault();
+            this.className = 'upload-drop-zone';
+
+            startUpload(e.dataTransfer.files)
+        }
+
+        dropZone.ondragover = function() {
+            this.className = 'upload-drop-zone drop';
+            return false;
+        }
+
+        dropZone.ondragleave = function() {
+            this.className = 'upload-drop-zone';
+            return false;
+        }
+        console.log("end here");
+    });
+</script>
+
+
 
 <#if title = "Dashboard and Overview">
 
@@ -118,6 +161,38 @@
 </#if>
 
 <style type="text/css">
+
+
+
+
+
+
+
+
+        /* layout.css Style */
+    .upload-drop-zone {
+        height: 200px;
+        border-width: 2px;
+        margin-bottom: 20px;
+    }
+
+        /* skin.css Style*/
+    .upload-drop-zone {
+        color: #ccc;
+        border-style: dashed;
+        border-color: #ccc;
+        line-height: 200px;
+        text-align: center
+    }
+    .upload-drop-zone.drop {
+        color: #222;
+        border-color: #222;
+    }
+
+
+
+
+
 
     .content a {
         color: #800000;

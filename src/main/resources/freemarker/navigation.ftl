@@ -3,11 +3,14 @@
         <#if title = "Dashboard and Overview">
         <li class="active"><#else>
         <li></#if><a href="/">Dashboard</a></li>
-
-        <!--
         <#if title = "Upload PStack file">
-        <li class="active"><#else>
-        <li></#if><a href="/upload">Upload</a></li>
+        <li class="active">
+        <#else>
+        <li>
+        </#if>
+        <a href="/upload">Upload ErrorLog(s)</a></li>
+
+            <!--
         <#if title = "PStack Collections">
         <li class="active"><#else>
         <li></#if><a href="/collections">Collections</a></li>
