@@ -10,56 +10,15 @@
 </#if>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script><#include "../vendor/dropzone.js"></script>
+<script><#include "../vendor/dropzone.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" />
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
 <script>
     $(function () {
-        console.log("starting dropzone...");
         $("file-dropzone").dropzone({ url: "/upload" });
     });
-    /*
-    $(function () {
-
-        'use strict';
-
-        // UPLOAD CLASS DEFINITION
-        // ======================
-        console.log("here");
-        var dropZone = document.getElementById('drop-zone');
-        var uploadForm = document.getElementById("js-upload-form");
-
-        var startUpload = function(files) {
-            console.log(files)
-        }
-
-        uploadForm.addEventListener("submit", function(e) {
-            var uploadFiles = document.getElementById('js-upload-files').files;
-            e.preventDefault()
-
-            startUpload(uploadFiles)
-        })
-
-        dropZone.ondrop = function(e) {
-            e.preventDefault();
-            this.className = 'upload-drop-zone';
-
-            startUpload(e.dataTransfer.files)
-        }
-
-        dropZone.ondragover = function() {
-            this.className = 'upload-drop-zone drop';
-            return false;
-        }
-
-        dropZone.ondragleave = function() {
-            this.className = 'upload-drop-zone';
-            return false;
-        }
-        console.log("end here");
-    }); */
 </script>
 
 
