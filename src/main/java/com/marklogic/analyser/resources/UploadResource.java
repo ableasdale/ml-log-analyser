@@ -43,13 +43,17 @@ public class UploadResource extends BaseResource {
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.TEXT_HTML)
     public Response uploadHandler(
             @FormDataParam("file") InputStream fileInputStream,
             @FormDataParam("file") FormDataContentDisposition contentDispositionHeader
     ) {
+
         String filePath = contentDispositionHeader.getFileName();
-        LOG.info(String.format("Handling the upload of a new PStack file: %s", filePath));
+
+        LOG.info(String.format("Handling the upload of a new ErrorLog / Messages file: %s", filePath));
+        processUploadedFile(fileInputStream, filePath);
+        //String filePath = contentDispositionHeader.getFileName();
+        //s LOG.info(String.format("Handling the upload of a new PStack file: %s", filePath));
 
        // PStackProcessor pp = new PStackProcessor();
        // List<PStackFrame> pstacks = pp.processPstackMovieFromInputStream(fileInputStream, filePath);
@@ -59,9 +63,10 @@ public class UploadResource extends BaseResource {
        // map.put("path", filePath);
        // PropertiesMap.setInstance(map);
 
-        URI uri = UriBuilder.fromPath("/").build();
-        return Response.seeOther(uri).build();
+       // URI uri = UriBuilder.fromPath("/").build();
+       // return Response.seeOther(uri).build();
         //return Response.temporaryRedirect(uri).build();
+        return Response.ok().build();
     }
 
 }

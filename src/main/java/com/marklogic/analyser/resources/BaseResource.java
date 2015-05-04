@@ -2,9 +2,9 @@ package com.marklogic.analyser.resources;
 
 import static java.text.MessageFormat.format;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -31,11 +31,40 @@ import com.xmlmachines.pstack.util.Utils;
 
 public class BaseResource {
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(BaseResource.class);
+	private static final Logger LOG = LoggerFactory.getLogger(BaseResource.class);
 
 	@Context
 	protected UriInfo uriInfo;
+
+    public List<File> files = new ArrayList<File>();
+
+
+    public void processUploadedFile(InputStream is, String filename) {
+        BufferedReader br = null;
+    // JDK 1.7 - changing for compatibility Path sourcePath =
+    // Paths.get(path);
+    try {
+        // JDK 1.7 - changing for compatibility br =
+        // Files.newBufferedReader(sourcePath, Consts.UTF_8_CHARSET);
+        br = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+        String line = null;
+        while ((line = br.readLine()) != null) {
+            LOG.info(line);
+        }
+    } catch (IOException x) {
+        LOG.error(
+                "IOException encountered while processing the fileInputStream - if the pstack was uploaded, please try again", x);
+    } finally {
+        try {
+            if (br != null)
+                br.close();
+        } catch (IOException x) {
+            LOG.error(
+                    "IOException encountered while closing the bufferedReader - if the pstack was uploaded, please try again", x);
+        }
+    }     }
+
+
 
 //	public List<PStackFrame> pstacks = PStackMovies.getInstance();
 
