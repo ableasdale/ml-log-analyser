@@ -32,7 +32,7 @@ public class RootResource extends BaseResource {
         map.put("title", "Dashboard and Overview");
         map.put("errorlog", ErrorLogMap.getInstance().get("ErrorLog.txt"));
         //  map.put("path", PropertiesMap.getInstance().get("path"));
-        //  map.put("stacks", pstacks);
+        map.put("errorlogs", ErrorLogMap.getInstance());
         //  map.put("stacksCarried", stackRecords);
         return map;
     }

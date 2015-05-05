@@ -48,14 +48,20 @@
         </div>
     </form>
 
-    <form class="navbar-form pull-right" action="/thread" method="post">
-        <div class="input-group">
-            <input type="text" name="id" class="form-control" placeholder="Follow Thread (by id)"">
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="submit">
-                    <span class="glyphicon glyphicon glyphicon-road"></span>
-                </button>
-            </span>
-        </div>
-    </form>
+    <div class="btn-group pull-right">
+        <button type="button" class="btn btn-primary navbar-btn">Select ErrorLog</button>
+        <button type="button" class="btn btn-primary dropdown-toggle navbar-btn" data-toggle="dropdown" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+        <#if errorlogs??>
+            <#assign elkeys = errorlogs?keys>
+            <#list elkeys as elkey>
+                <li><a href="#">${elkey}</a></li>
+            </#list>
+        </#if>
+        </ul>
+    </div>
+
 </div>

@@ -10,23 +10,14 @@
         <#include "navigation.ftl">
     </div>
 
-    <div class="well">
 
-    <#if errorlogkeylist??>
-        <#assign elkeys = errorlogkeylist?keys>
-        <#list elkeys as elkey>
-            <p>${elkey}</p>
-        </#list>
 
-    </#if>
-
-        <p>Current file: ${errorlog.getName()}</p>
-    </div>
+    <h3>Current file: <small>${errorlog.getName()}</small></h3>
 
     <div class="sixteen columns">
-        <h3>Output:</h3>
-        <textarea>
-            <#list errorlog.getErrorLogTxt() as item>${item}</#list>
+        <textarea id="errorlog">
+<#list errorlog.getErrorLogTxt() as item>${item}
+</#list>
         </textarea>
     </div>
 
