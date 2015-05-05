@@ -144,8 +144,9 @@ public class BaseResource {
         File file = new File(path);
         Collection<File> files = FileUtils.listFiles(file, null, true);
         for (File file2 : files) {
-            if (file2.getName().startsWith("ErrorLog")) {
-                LOG.info(file2.getName());
+            // TODO: Note - deliberately restricting it to just parsing the most recent ErrorLog so app starts faster - make this configurable
+            if (file2.getName().startsWith("ErrorLog.txt")) {
+                LOG.debug(file2.getName());
                 try {
                     fpm.processLog(file2);
                 } catch (IOException e) {

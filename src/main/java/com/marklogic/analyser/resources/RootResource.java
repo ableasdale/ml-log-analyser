@@ -2,6 +2,7 @@ package com.marklogic.analyser.resources;
 
 
 import com.marklogic.analyser.util.Consts;
+import com.marklogic.analyser.util.Os;
 import com.sun.jersey.api.view.Viewable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,12 +47,19 @@ public class RootResource extends BaseResource {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public Viewable getDashboard() {
-        LOG.debug("getDashboard() :: Rendering view");
-        analysePath(Consts.DIRECTORY_PATH);
+        // is this a first run?
+        if (ErrorLogMap.getInstance().size() == 0){
+            LOG.debug("getDashboard() :: first run :: Rendering view for: " + Consts.HOST_OS);
+            if (Os.isWindows()){
+                analysePath(Consts.DIRECTORY_PATH_WINDOWS);
+            }
+            // TODO - Add Linux support (and maybe OSX)
+
+        }
+
         //stackRecords = identifyCarriedOverStacks(pstacks);
         // renders the URI using "src/main/resources/freemarker/dashboard.ftl"
         return new Viewable("/dashboard", createModel());
-
     }
 
 }

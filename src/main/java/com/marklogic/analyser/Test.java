@@ -25,9 +25,9 @@ public class Test {
         FileProcessManager fpm = new FileProcessManager();
 
         // traverse a directory
-        LOG.info(MessageFormat.format("Traversing Directory: {0}", Consts.DIRECTORY_PATH));
+        LOG.info(MessageFormat.format("Traversing Directory: {0}", Consts.DIRECTORY_PATH_WINDOWS));
 
-        File file = new File(Consts.DIRECTORY_PATH);
+        File file = new File(Consts.DIRECTORY_PATH_WINDOWS);
         Collection<File> files = FileUtils.listFiles(file, null, true);
         for (File file2 : files){
             if(file2.getName().startsWith("ErrorLog")){

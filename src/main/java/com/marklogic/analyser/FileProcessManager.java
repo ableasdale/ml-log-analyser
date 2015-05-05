@@ -61,7 +61,7 @@ public class FileProcessManager {
                 int start = lines.indexOf(l);
                 int idx;
                 LOG.info(MessageFormat.format("Array index for restart message: {0}", String.valueOf(start)));
-                LOG.info(MessageFormat.format("Restart detected - displaying the following {0} lines after restart and lines before..", Consts.RESTART_TOTAL_LINES));
+                LOG.debug(MessageFormat.format("Restart detected - displaying the following {0} lines after restart and lines before..", Consts.RESTART_TOTAL_LINES));
 
                 if (start >= 4) {
                     idx = start - 3;
@@ -70,18 +70,20 @@ public class FileProcessManager {
                 }
 
                 for (int i = 0; i < Consts.RESTART_TOTAL_LINES; i++){
-                    LOG.info(lines.get(idx));
+                    LOG.debug(lines.get(idx));
                     idx++;
                 }
             }
+
+            // TODO:: below
             if(l.contains("Event:")) {
-                LOG.info("* Event * : "+l);
+                LOG.debug("* Event * : "+l);
             }
             if (l.contains("Warning:")) {
-                LOG.info("* Warning * : "+l);
+                LOG.debug("* Warning * : "+l);
             }
             if (l.contains("* Critical * : "+l)) {
-                LOG.info("Critical");
+                LOG.debug("Critical");
             }
             // Exception keywords
             for (String j : Consts.KEYWORDS) {
