@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +51,11 @@ public class UploadResource extends BaseResource {
 
         LOG.info(String.format("Handling the upload of a new ErrorLog / Messages file: %s", filePath));
         FileProcessManager fpm = new FileProcessManager();
-        fpm.processUploadedFile(fileInputStream, filePath);
+        try {
+            fpm.processUploadedFile(fileInputStream, filePath);
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
         //String filePath = contentDispositionHeader.getFileName();
         //s LOG.info(String.format("Handling the upload of a new PStack file: %s", filePath));
 

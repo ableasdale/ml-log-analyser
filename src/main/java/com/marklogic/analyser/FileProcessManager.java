@@ -26,13 +26,15 @@ import java.util.Map;
 public class FileProcessManager {
 
     Logger LOG = LoggerFactory.getLogger(FileProcessManager.class);
-
+    Map<String, List<String>> elm = ErrorLogMap.getInstance();
 
     public void processUploadedFile(InputStream is, String filename) throws IOException {
         LOG.info(MessageFormat.format("Processing Uploaded ErrorLog file: {0}", filename));
-        Map<String, List<String>> elm = ErrorLogMap.getInstance();
+
         List<String> lines = IOUtils.readLines(new InputStreamReader(is, Charset.forName("UTF-8")));
+        elm.put(filename, lines);
         Map<String, Integer> keywordOccurrences = processLines(lines);
+        // TODO - put occurrences in too...
 
         for (String s : keywordOccurrences.keySet())
             LOG.info(MessageFormat.format("Total number of {0} messages reported: {1}", s, String.valueOf(keywordOccurrences.get(s))));
@@ -43,9 +45,11 @@ public class FileProcessManager {
 
     public void processLog(File file) throws IOException {
         LOG.info(MessageFormat.format("Processing ErrorLog file: {0}", file.getName()));
-        Map<String, List<String>> elm = ErrorLogMap.getInstance();
+
         String fileStr = readFile(file.getPath(), StandardCharsets.UTF_8);
         List<String> lines = IOUtils.readLines(new StringReader(fileStr));
+        elm.put(file.getPath(), lines);
+
         Map<String, Integer> keywordOccurrences = processLines(lines);
 
         for (String s : keywordOccurrences.keySet())
@@ -61,12 +65,12 @@ public class FileProcessManager {
             if (l.contains("Starting MarkLogic")) {
                 int start = lines.indexOf(l);
                 int idx;
-                LOG.debug(MessageFormat.format("Array index for restart message: {0}", String.valueOf(start)));
+                LOG.info(MessageFormat.format("Array index for restart message: {0}", String.valueOf(start)));
                 LOG.info(MessageFormat.format("Restart detected - displaying the following {0} lines after restart and lines before..", Consts.RESTART_TOTAL_LINES));
 
-                if (start < 2) {
+                if (start >= 4) {
                     idx = start - 3;
-                }   else {
+                }  else {
                     idx = 1;
                 }
 
@@ -92,7 +96,7 @@ public class FileProcessManager {
                     } else {
                         keywordOccurrences.put(j, 1);
                     }
-                   // LOG.info(l);
+                   // LOG.debug(l);
                 }
             }
         }

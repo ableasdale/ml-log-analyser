@@ -21,6 +21,14 @@
         </textarea>
     </div>
 
+    <#if errorlogs??>
+    <#assign elkeys = errorlogs?keys>
+    <#list elkeys as elkey>
+    <p>${elkey}</p>
+    </#list>
+    </#if>
+
+
 </div>
 <#include "footer.ftl">
 </body>

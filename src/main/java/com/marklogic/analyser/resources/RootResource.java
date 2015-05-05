@@ -31,6 +31,7 @@ public class RootResource extends BaseResource {
     private Map<String, Object> createModel() {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("title", "Dashboard and Overview");
+        map.put("errorlogs", ErrorLogMap.getInstance());
         //  map.put("path", PropertiesMap.getInstance().get("path"));
         //  map.put("stacks", pstacks);
         //  map.put("stacksCarried", stackRecords);
