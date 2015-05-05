@@ -25,13 +25,12 @@ import java.util.Map;
 public class RootResource extends BaseResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(RootResource.class);
-    private Map<String, List<String>> stackRecords;
 
     // data model for freemarker .ftl template
     private Map<String, Object> createModel() {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("title", "Dashboard and Overview");
-        map.put("errorlogs", ErrorLogMap.getInstance());
+        map.put("errorlog", ErrorLogMap.getInstance().get("ErrorLog.txt"));
         //  map.put("path", PropertiesMap.getInstance().get("path"));
         //  map.put("stacks", pstacks);
         //  map.put("stacksCarried", stackRecords);

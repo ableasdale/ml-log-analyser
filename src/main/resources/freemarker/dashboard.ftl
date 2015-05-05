@@ -11,22 +11,26 @@
     </div>
 
     <div class="well">
-        <p>Current file: </p>
+
+    <#if errorlogkeylist??>
+        <#assign elkeys = errorlogkeylist?keys>
+        <#list elkeys as elkey>
+            <p>${elkey}</p>
+        </#list>
+
+    </#if>
+
+        <p>Current file: ${errorlog.getName()}</p>
     </div>
 
     <div class="sixteen columns">
         <h3>Output:</h3>
         <textarea>
-
+            <#list errorlog.getErrorLogTxt() as item>${item}</#list>
         </textarea>
     </div>
 
-    <#if errorlogs??>
-    <#assign elkeys = errorlogs?keys>
-    <#list elkeys as elkey>
-    <p>${elkey}</p>
-    </#list>
-    </#if>
+
 
 
 </div>

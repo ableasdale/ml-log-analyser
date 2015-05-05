@@ -1,5 +1,6 @@
 package com.marklogic.analyser;
 
+import com.marklogic.analyser.beans.ErrorLog;
 import com.marklogic.analyser.resources.ErrorLogMap;
 import com.marklogic.analyser.util.Consts;
 import org.apache.commons.io.IOUtils;
@@ -26,40 +27,34 @@ import java.util.Map;
 public class FileProcessManager {
 
     Logger LOG = LoggerFactory.getLogger(FileProcessManager.class);
-    Map<String, List<String>> elm = ErrorLogMap.getInstance();
 
     public void processUploadedFile(InputStream is, String filename) throws IOException {
         LOG.info(MessageFormat.format("Processing Uploaded ErrorLog file: {0}", filename));
 
-        List<String> lines = IOUtils.readLines(new InputStreamReader(is, Charset.forName("UTF-8")));
-        elm.put(filename, lines);
-        Map<String, Integer> keywordOccurrences = processLines(lines);
-        // TODO - put occurrences in too...
-
-        for (String s : keywordOccurrences.keySet())
-            LOG.info(MessageFormat.format("Total number of {0} messages reported: {1}", s, String.valueOf(keywordOccurrences.get(s))));
+        ErrorLog el = new ErrorLog();
+        el.setName(filename);
+        el.setErrorLogTxt( IOUtils.readLines(new InputStreamReader(is, Charset.forName("UTF-8"))));
+        processErrorLog(el);
 
     }
-
-
 
     public void processLog(File file) throws IOException {
         LOG.info(MessageFormat.format("Processing ErrorLog file: {0}", file.getName()));
 
         String fileStr = readFile(file.getPath(), StandardCharsets.UTF_8);
-        List<String> lines = IOUtils.readLines(new StringReader(fileStr));
-        elm.put(file.getPath(), lines);
+        ErrorLog el = new ErrorLog();
+        el.setName(file.getName());
+        el.setErrorLogTxt(IOUtils.readLines(new StringReader(fileStr)));
+        processErrorLog(el);
 
-        Map<String, Integer> keywordOccurrences = processLines(lines);
-
-        for (String s : keywordOccurrences.keySet())
-            LOG.info(MessageFormat.format("Total number of {0} messages reported: {1}", s, String.valueOf(keywordOccurrences.get(s))));
     }
 
 
 
-    private Map<String, Integer> processLines(List<String> lines) {
+    private void processErrorLog(ErrorLog el) {
+
         Map<String, Integer> keywordOccurrences = new HashMap<String, Integer>();
+        List<String> lines = el.getErrorLogTxt();
 
         for (String l : lines)  {
             if (l.contains("Starting MarkLogic")) {
@@ -100,7 +95,12 @@ public class FileProcessManager {
                 }
             }
         }
-        return keywordOccurrences;
+
+        el.setOccurrenceMap(keywordOccurrences);
+        ErrorLogMap.getInstance().put(el.getName(), el);
+
+        for (String s : el.getOccurrenceMap().keySet())
+            LOG.info(MessageFormat.format("Total number of {0} messages reported: {1}", s, String.valueOf(keywordOccurrences.get(s))));
     }
 
     public String readFile(String path, Charset encoding) throws IOException {

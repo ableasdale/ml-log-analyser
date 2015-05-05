@@ -56,20 +56,7 @@ public class UploadResource extends BaseResource {
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        //String filePath = contentDispositionHeader.getFileName();
-        //s LOG.info(String.format("Handling the upload of a new PStack file: %s", filePath));
 
-        // PStackProcessor pp = new PStackProcessor();
-        // List<PStackFrame> pstacks = pp.processPstackMovieFromInputStream(fileInputStream, filePath);
-        // PStackMovies.setPStacks(pstacks);
-
-        // Map<String, String> map = PropertiesMap.getInstance();
-        // map.put("path", filePath);
-        // PropertiesMap.setInstance(map);
-
-        // URI uri = UriBuilder.fromPath("/").build();
-        // return Response.seeOther(uri).build();
-        //return Response.temporaryRedirect(uri).build();
         return Response.ok().build();
     }
 
