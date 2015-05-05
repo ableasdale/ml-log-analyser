@@ -30,7 +30,7 @@ public class UploadResource extends BaseResource {
 
     private Map<String, Object> createModel() {
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("title", "UploadResource PStack file");
+        map.put("title", "Upload ErrorLog");
         return map;
     }
 

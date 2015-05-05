@@ -52,8 +52,10 @@ public class RootResource extends BaseResource {
             LOG.debug("getDashboard() :: first run :: Rendering view for: " + Consts.HOST_OS);
             if (Os.isWindows()){
                 analysePath(Consts.DIRECTORY_PATH_WINDOWS);
+            } else if (Os.isLinux()) {
+                analysePath(Consts.DIRECTORY_PATH_LINUX);
             }
-            // TODO - Add Linux support (and maybe OSX)
+            // TODO - Add OS X support (and maybe Solaris?)
 
         }
 

@@ -58,7 +58,7 @@
         <#if errorlogs??>
             <#assign elkeys = errorlogs?keys>
             <#list elkeys as elkey>
-                <li><a href="#">${elkey}</a></li>
+                <li><a href="/view/${elkey}">${elkey}</a></li>
             </#list>
         </#if>
         </ul>
