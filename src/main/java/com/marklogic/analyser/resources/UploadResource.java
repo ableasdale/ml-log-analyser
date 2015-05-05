@@ -1,18 +1,16 @@
 package com.marklogic.analyser.resources;
 
+import com.marklogic.analyser.FileProcessManager;
 import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,20 +49,21 @@ public class UploadResource extends BaseResource {
         String filePath = contentDispositionHeader.getFileName();
 
         LOG.info(String.format("Handling the upload of a new ErrorLog / Messages file: %s", filePath));
+        FileProcessManager fpm = new FileProcessManager();
         fpm.processUploadedFile(fileInputStream, filePath);
         //String filePath = contentDispositionHeader.getFileName();
         //s LOG.info(String.format("Handling the upload of a new PStack file: %s", filePath));
 
-       // PStackProcessor pp = new PStackProcessor();
-       // List<PStackFrame> pstacks = pp.processPstackMovieFromInputStream(fileInputStream, filePath);
-       // PStackMovies.setPStacks(pstacks);
+        // PStackProcessor pp = new PStackProcessor();
+        // List<PStackFrame> pstacks = pp.processPstackMovieFromInputStream(fileInputStream, filePath);
+        // PStackMovies.setPStacks(pstacks);
 
-       // Map<String, String> map = PropertiesMap.getInstance();
-       // map.put("path", filePath);
-       // PropertiesMap.setInstance(map);
+        // Map<String, String> map = PropertiesMap.getInstance();
+        // map.put("path", filePath);
+        // PropertiesMap.setInstance(map);
 
-       // URI uri = UriBuilder.fromPath("/").build();
-       // return Response.seeOther(uri).build();
+        // URI uri = UriBuilder.fromPath("/").build();
+        // return Response.seeOther(uri).build();
         //return Response.temporaryRedirect(uri).build();
         return Response.ok().build();
     }

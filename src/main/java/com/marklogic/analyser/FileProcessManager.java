@@ -1,5 +1,6 @@
 package com.marklogic.analyser;
 
+import com.marklogic.analyser.resources.ErrorLogMap;
 import com.marklogic.analyser.util.Consts;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -27,41 +28,33 @@ public class FileProcessManager {
     Logger LOG = LoggerFactory.getLogger(FileProcessManager.class);
 
 
-    public void processUploadedFile(InputStream is, String filename) {
-        BufferedReader br = null;
-        // JDK 1.7 - changing for compatibility Path sourcePath =
-        // Paths.get(path);
-        try {
-            // JDK 1.7 - changing for compatibility br =
-            // Files.newBufferedReader(sourcePath, Consts.UTF_8_CHARSET);
-            List<String> lines = IOUtils.readLines(new InputStreamReader(is, Charset.forName("UTF-8")));
+    public void processUploadedFile(InputStream is, String filename) throws IOException {
+        LOG.info(MessageFormat.format("Processing Uploaded ErrorLog file: {0}", filename));
+        Map<String, List<String>> elm = ErrorLogMap.getInstance();
+        List<String> lines = IOUtils.readLines(new InputStreamReader(is, Charset.forName("UTF-8")));
+        Map<String, Integer> keywordOccurrences = processLines(lines);
 
-            br = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-            String line = null;
-            while ((line = br.readLine()) != null) {
-                LOG.info(line);
-            }
-        } catch (IOException x) {
-            LOG.error(
-                    "IOException encountered while processing the fileInputStream - if the pstack was uploaded, please try again", x);
-        } finally {
-            try {
-                if (br != null)
-                    br.close();
-            } catch (IOException x) {
-                LOG.error(
-                        "IOException encountered while closing the bufferedReader - if the pstack was uploaded, please try again", x);
-            }
-        }     }
+        for (String s : keywordOccurrences.keySet())
+            LOG.info(MessageFormat.format("Total number of {0} messages reported: {1}", s, String.valueOf(keywordOccurrences.get(s))));
+
+    }
 
 
 
     public void processLog(File file) throws IOException {
-        LOG.info("Processing ErrorLog file: " + file.getName());
+        LOG.info(MessageFormat.format("Processing ErrorLog file: {0}", file.getName()));
+        Map<String, List<String>> elm = ErrorLogMap.getInstance();
         String fileStr = readFile(file.getPath(), StandardCharsets.UTF_8);
-        //System.out.println(fileStr);
         List<String> lines = IOUtils.readLines(new StringReader(fileStr));
+        Map<String, Integer> keywordOccurrences = processLines(lines);
 
+        for (String s : keywordOccurrences.keySet())
+            LOG.info(MessageFormat.format("Total number of {0} messages reported: {1}", s, String.valueOf(keywordOccurrences.get(s))));
+    }
+
+
+
+    private Map<String, Integer> processLines(List<String> lines) {
         Map<String, Integer> keywordOccurrences = new HashMap<String, Integer>();
 
         for (String l : lines)  {
@@ -103,10 +96,7 @@ public class FileProcessManager {
                 }
             }
         }
-
-        //System.out.println("debug");
-        for (String s : keywordOccurrences.keySet())
-            LOG.info(MessageFormat.format("Total number of {0} messages reported: {1}", s, String.valueOf(keywordOccurrences.get(s))));
+        return keywordOccurrences;
     }
 
     public String readFile(String path, Charset encoding) throws IOException {
