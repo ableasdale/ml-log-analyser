@@ -7,11 +7,10 @@ import com.sun.jersey.api.view.Viewable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +26,7 @@ public class RootResource extends BaseResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(RootResource.class);
 
-    // data model for freemarker .ftl template
+    /* data model for freemarker .ftl template
     private Map<String, Object> createModel() {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("title", "Dashboard and Overview");
@@ -35,6 +34,15 @@ public class RootResource extends BaseResource {
         //  map.put("path", PropertiesMap.getInstance().get("path"));
         map.put("errorlogs", ErrorLogMap.getInstance());
         //  map.put("stacksCarried", stackRecords);
+        return map;
+    } */
+
+    // data model for freemarker .ftl template
+    private Map<String, Object> createModel(String id) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("title", "Dashboard and Overview");
+        map.put("errorlog", ErrorLogMap.getInstance().get(id));
+        map.put("errorlogs", ErrorLogMap.getInstance());
         return map;
     }
 
@@ -49,7 +57,7 @@ public class RootResource extends BaseResource {
     public Viewable getDashboard() {
         // is this a first run?
         if (ErrorLogMap.getInstance().size() == 0){
-            LOG.debug("getDashboard() :: first run :: Rendering view for: " + Consts.HOST_OS);
+            LOG.debug(MessageFormat.format("getDashboard() :: first run :: Rendering view for: {0}", Consts.HOST_OS));
             if (Os.isWindows()){
                 analysePath(Consts.DIRECTORY_PATH_WINDOWS);
             } else if (Os.isLinux()) {
@@ -61,7 +69,15 @@ public class RootResource extends BaseResource {
 
         //stackRecords = identifyCarriedOverStacks(pstacks);
         // renders the URI using "src/main/resources/freemarker/dashboard.ftl"
-        return new Viewable("/dashboard", createModel());
+        return new Viewable("/dashboard", createModel("ErrorLog.txt"));
+    }
+
+    @GET
+    @Path("/view/{id}")
+    @Produces(MediaType.TEXT_HTML)
+    public Viewable getDetails(@PathParam("id") String id) {
+        LOG.debug(id);
+        return new Viewable("/dashboard", createModel(id));
     }
 
 }

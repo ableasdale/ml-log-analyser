@@ -10,8 +10,6 @@
         <#include "navigation.ftl">
     </div>
 
-
-
     <h3>Current file: <small>${errorlog.getName()}</small></h3>
 
     <div class="sixteen columns">
@@ -20,9 +18,6 @@
 </#list>
         </textarea>
     </div>
-
-
-
 
 </div>
 <#include "footer.ftl">
