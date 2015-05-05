@@ -51,7 +51,7 @@ public class UploadResource extends BaseResource {
         String filePath = contentDispositionHeader.getFileName();
 
         LOG.info(String.format("Handling the upload of a new ErrorLog / Messages file: %s", filePath));
-        processUploadedFile(fileInputStream, filePath);
+        fpm.processUploadedFile(fileInputStream, filePath);
         //String filePath = contentDispositionHeader.getFileName();
         //s LOG.info(String.format("Handling the upload of a new PStack file: %s", filePath));
 

@@ -5,9 +5,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -27,6 +25,36 @@ import java.util.Map;
 public class FileProcessManager {
 
     Logger LOG = LoggerFactory.getLogger(FileProcessManager.class);
+
+
+    public void processUploadedFile(InputStream is, String filename) {
+        BufferedReader br = null;
+        // JDK 1.7 - changing for compatibility Path sourcePath =
+        // Paths.get(path);
+        try {
+            // JDK 1.7 - changing for compatibility br =
+            // Files.newBufferedReader(sourcePath, Consts.UTF_8_CHARSET);
+            List<String> lines = IOUtils.readLines(new InputStreamReader(is, Charset.forName("UTF-8")));
+
+            br = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                LOG.info(line);
+            }
+        } catch (IOException x) {
+            LOG.error(
+                    "IOException encountered while processing the fileInputStream - if the pstack was uploaded, please try again", x);
+        } finally {
+            try {
+                if (br != null)
+                    br.close();
+            } catch (IOException x) {
+                LOG.error(
+                        "IOException encountered while closing the bufferedReader - if the pstack was uploaded, please try again", x);
+            }
+        }     }
+
+
 
     public void processLog(File file) throws IOException {
         LOG.info("Processing ErrorLog file: " + file.getName());
