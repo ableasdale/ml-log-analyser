@@ -30,7 +30,11 @@
 <script><#include "../vendor/dropzone.min.js"></script>
 <script>
         $(function () {
-            $("file-dropzone").dropzone({ url: "/upload" });
+            // "myAwesomeDropzone" is the camelized version of the HTML element's ID
+            Dropzone.options.dropzone = {
+                maxFilesize: 4096 // MB
+            };
+            $("dropzone").dropzone({ url: "/upload", maxFilesize: 4 });
         });
 </script>
 </#if>
@@ -38,11 +42,7 @@
 
 
 
-<!--      DELETE MOST OF BELOW:
-<#if title = "Summary View" || title = "Follow Thread" || title="Search"  || title="Unique Threads">
-<style type="text/css"><#include "../vendor/prism/prism.css"></style>
-<script><#include "../vendor/prism/prism.js"></script>
-</#if> -->
+<!-- TODO - DELETE BELOW -->
 
 
 <#if title = "Unique Threads">

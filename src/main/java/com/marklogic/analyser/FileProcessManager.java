@@ -31,12 +31,11 @@ public class FileProcessManager {
 
     public void processUploadedFile(InputStream is, String filename) throws IOException {
         LOG.info(MessageFormat.format("Processing Uploaded ErrorLog file: {0}", filename));
-
         ErrorLog el = new ErrorLog();
         el.setName(filename);
         el.setErrorLogTxt(IOUtils.readLines(new InputStreamReader(is, Charset.forName("UTF-8"))));
         processErrorLog(el);
-
+        LOG.info(MessageFormat.format("Completed processing ErrorLog file: {0}", filename));
     }
 
     public void processLog(File file) throws IOException {
@@ -47,61 +46,82 @@ public class FileProcessManager {
         el.setName(file.getName());
         el.setErrorLogTxt(IOUtils.readLines(new StringReader(fileStr)));
         processErrorLog(el);
-
+        LOG.info(MessageFormat.format("Completed processing ErrorLog file: {0}", file.getName()));
     }
 
 
     private void processErrorLog(ErrorLog el) {
 
         Map<String, List<String>> keywordOccurrences = new HashMap<String, List<String>>();
+        Map<String, List<String>> otherMessages = new HashMap<String, List<String>>();
+        List<String> restarts = new ArrayList<String>();
         List<String> lines = el.getErrorLogTxt();
 
         for (String l : lines) {
-            if (l.contains("Starting MarkLogic")) {
-                int start = lines.indexOf(l);
-                int idx;
-                LOG.info(MessageFormat.format("Array index for restart message: {0}", String.valueOf(start)));
-                LOG.debug(MessageFormat.format("Restart detected - displaying the following {0} lines after restart and lines before..", Consts.RESTART_TOTAL_LINES));
+            // Ignore some verbose logging:
+            if(l.contains("Fine: ") || l.contains("Finer: ") || l.contains("Finest: ")) {
+                // || l.contains("Debug: " ?
+                // nothing to see here: done
+            } else {
+                if (l.contains("Starting MarkLogic")) {
+                    int start = lines.indexOf(l);
+                    int idx;
+                    LOG.debug(MessageFormat.format("Array index for restart message: {0}", String.valueOf(start)));
+                    LOG.debug(MessageFormat.format("Restart detected - adding the following {0} lines after restart and lines before..", Consts.RESTART_TOTAL_LINES));
 
-                if (start >= 4) {
-                    idx = start - 3;
-                } else {
-                    idx = 1;
+                    if (start >= 4) {
+                        idx = start - 3;
+                    } else {
+                        idx = 1;
+                    }
+
+                    for (int i = 0; i < Consts.RESTART_TOTAL_LINES; i++) {
+                        restarts.add(lines.get(idx));
+                        idx++;
+                    }
+                    restarts.add("------------");
                 }
-
-                for (int i = 0; i < Consts.RESTART_TOTAL_LINES; i++) {
-                    LOG.debug(lines.get(idx));
-                    idx++;
+                // TODO:: below is not implemented yet
+                if (l.contains("Event:")) {
+                    // TODO - do we want to break these up into separate mappable items?
+                    LOG.debug("* Event * : " + l);
                 }
-            }
+                if (l.contains("Warning: ") || l.contains("Notice: ") || l.contains("Critical: ") ) {
+                    String msgType = l.split(" ")[2];
+                    msgType = msgType.substring(0, msgType.length() -1);
 
-            // TODO:: below
-            if (l.contains("Event:")) {
-                LOG.debug("* Event * : " + l);
-            }
-            if (l.contains("Warning:")) {
-                LOG.debug("* Warning * : " + l);
-            }
-            if (l.contains("* Critical * : " + l)) {
-                LOG.debug("Critical");
-            }
-            // Exception keywords
-            for (String j : Consts.KEYWORDS) {
-                if (l.contains(j)) {
-                    if (keywordOccurrences.containsKey(j)) {
-                        List<String> lst = keywordOccurrences.get(j);
+                    LOG.debug(MessageFormat.format("Important {0} level ErrorLog message found", msgType));
+                    if(otherMessages.containsKey(msgType)){
+                        List<String> lst = otherMessages.get(msgType);
                         lst.add(l);
-                        keywordOccurrences.put(j, lst);
+                        otherMessages.put(msgType, lst);
                     } else {
                         List<String> lst =  new ArrayList<String>();
                         lst.add(l);
-                        keywordOccurrences.put(j, lst);
+                        otherMessages.put(msgType, lst);
                     }
-                    // LOG.debug(l);
+                }
+
+                // Exception keywords
+                for (String j : Consts.KEYWORDS) {
+                    if (l.contains(j)) {
+                        if (keywordOccurrences.containsKey(j)) {
+                            List<String> lst = keywordOccurrences.get(j);
+                            lst.add(l);
+                            keywordOccurrences.put(j, lst);
+                        } else {
+                            List<String> lst =  new ArrayList<String>();
+                            lst.add(l);
+                            keywordOccurrences.put(j, lst);
+                        }
+                        // LOG.debug(l);
+                    }
                 }
             }
         }
 
+        otherMessages.put("Restarts", restarts);
+        el.setOtherMessages(otherMessages);
         el.setOccurrenceMap(keywordOccurrences);
         ErrorLogMap.getInstance().put(el.getName(), el);
 

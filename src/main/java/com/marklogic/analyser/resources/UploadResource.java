@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,9 +55,8 @@ public class UploadResource extends BaseResource {
         try {
             fpm.processUploadedFile(fileInputStream, filePath);
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            LOG.error(MessageFormat.format("IO Exception caught processing file {0}: {1}", filePath, e.getMessage()));
         }
-
         return Response.ok().build();
     }
 

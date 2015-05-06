@@ -19,7 +19,7 @@
         <div class="panel-body">
 
             <h4>Select files from your computer</h4>
-            <form enctype="multipart/form-data" action="/upload" method="post" class="dropzone" id="file-dropzone"></form>
+            <form enctype="multipart/form-data" action="/upload" method="post" class="dropzone" id="dropzone"></form>
 
         </div>
     </div>
