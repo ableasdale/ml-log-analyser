@@ -11,9 +11,10 @@ import java.util.Map;
  * Time: 14:02
  */
 public class ErrorLog {
+
     private String name;
     private List<String> errorLogTxt;
-    private Map<String, Integer> occurrenceMap;
+    private Map<String, List<String>> occurrenceMap;
 
     public String getName() {
         return name;
@@ -27,9 +28,8 @@ public class ErrorLog {
         return errorLogTxt;
     }
 
-
     public List<String> getErrorLogHead() {
-        if (errorLogTxt.size() > 10000) return errorLogTxt.subList(0, 9999);
+        if (errorLogTxt.size() > 10000) return errorLogTxt.subList(0, 10000);
         else return getErrorLogTxt();
     }
 
@@ -37,35 +37,33 @@ public class ErrorLog {
         this.errorLogTxt = errorLogTxt;
     }
 
-    public Map<String, Integer> getOccurrenceMap() {
+    public Map<String, List<String>> getOccurrenceMap() {
         return occurrenceMap;
     }
 
-    public void setOccurrenceMap(Map<String, Integer> occurrenceMap) {
+    public void setOccurrenceMap(Map<String, List<String>> occurrenceMap) {
         this.occurrenceMap = occurrenceMap;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ErrorLog)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         ErrorLog errorLog = (ErrorLog) o;
 
-        if (errorLogTxt != null ? !errorLogTxt.equals(errorLog.errorLogTxt) : errorLog.errorLogTxt != null)
-            return false;
-        if (name != null ? !name.equals(errorLog.name) : errorLog.name != null) return false;
-        if (occurrenceMap != null ? !occurrenceMap.equals(errorLog.occurrenceMap) : errorLog.occurrenceMap != null)
-            return false;
+        if (!errorLogTxt.equals(errorLog.errorLogTxt)) return false;
+        if (!name.equals(errorLog.name)) return false;
+        if (!occurrenceMap.equals(errorLog.occurrenceMap)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (errorLogTxt != null ? errorLogTxt.hashCode() : 0);
-        result = 31 * result + (occurrenceMap != null ? occurrenceMap.hashCode() : 0);
+        int result = name.hashCode();
+        result = 31 * result + errorLogTxt.hashCode();
+        result = 31 * result + occurrenceMap.hashCode();
         return result;
     }
 }

@@ -15,19 +15,19 @@
     <div class="sixteen columns">
 
 
-    <dl>
+
         <#assign el = errorlog.getOccurrenceMap()>
         <#assign elkeys = el?keys>
         <#list elkeys as elkey>
-            <dt><a href="#">${elkey}</a></dt>
-            <dd>${el[elkey]}</dd>
+            <#assign itemlist = el[elkey]>
+            <div class="form-group">
+            <label for="${elkey}">${elkey}: (${itemlist?size} occurrence(s))</label>
+            <textarea class="form-control" rows="5" id="${elkey}"><#list itemlist as item>${item}
+</#list></textarea>
+            </div>
         </#list>
-    </dl>
 
-
-
-
-
+        <h3>ErrorLog below <small>(truncated at 10,000 lines)</small></h3>
         <textarea id="errorlog">
 <#list errorlog.getErrorLogHead() as item>${item}
 </#list>

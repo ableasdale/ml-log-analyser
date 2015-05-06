@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,7 @@ public class FileProcessManager {
 
     private void processErrorLog(ErrorLog el) {
 
-        Map<String, Integer> keywordOccurrences = new HashMap<String, Integer>();
+        Map<String, List<String>> keywordOccurrences = new HashMap<String, List<String>>();
         List<String> lines = el.getErrorLogTxt();
 
         for (String l : lines) {
@@ -88,9 +89,13 @@ public class FileProcessManager {
             for (String j : Consts.KEYWORDS) {
                 if (l.contains(j)) {
                     if (keywordOccurrences.containsKey(j)) {
-                        keywordOccurrences.put(j, (keywordOccurrences.get(j) + 1));
+                        List<String> lst = keywordOccurrences.get(j);
+                        lst.add(l);
+                        keywordOccurrences.put(j, lst);
                     } else {
-                        keywordOccurrences.put(j, 1);
+                        List<String> lst =  new ArrayList<String>();
+                        lst.add(l);
+                        keywordOccurrences.put(j, lst);
                     }
                     // LOG.debug(l);
                 }
