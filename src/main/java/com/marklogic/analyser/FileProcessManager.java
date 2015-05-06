@@ -33,7 +33,7 @@ public class FileProcessManager {
 
         ErrorLog el = new ErrorLog();
         el.setName(filename);
-        el.setErrorLogTxt( IOUtils.readLines(new InputStreamReader(is, Charset.forName("UTF-8"))));
+        el.setErrorLogTxt(IOUtils.readLines(new InputStreamReader(is, Charset.forName("UTF-8"))));
         processErrorLog(el);
 
     }
@@ -50,13 +50,12 @@ public class FileProcessManager {
     }
 
 
-
     private void processErrorLog(ErrorLog el) {
 
         Map<String, Integer> keywordOccurrences = new HashMap<String, Integer>();
         List<String> lines = el.getErrorLogTxt();
 
-        for (String l : lines)  {
+        for (String l : lines) {
             if (l.contains("Starting MarkLogic")) {
                 int start = lines.indexOf(l);
                 int idx;
@@ -65,35 +64,35 @@ public class FileProcessManager {
 
                 if (start >= 4) {
                     idx = start - 3;
-                }  else {
+                } else {
                     idx = 1;
                 }
 
-                for (int i = 0; i < Consts.RESTART_TOTAL_LINES; i++){
+                for (int i = 0; i < Consts.RESTART_TOTAL_LINES; i++) {
                     LOG.debug(lines.get(idx));
                     idx++;
                 }
             }
 
             // TODO:: below
-            if(l.contains("Event:")) {
-                LOG.debug("* Event * : "+l);
+            if (l.contains("Event:")) {
+                LOG.debug("* Event * : " + l);
             }
             if (l.contains("Warning:")) {
-                LOG.debug("* Warning * : "+l);
+                LOG.debug("* Warning * : " + l);
             }
-            if (l.contains("* Critical * : "+l)) {
+            if (l.contains("* Critical * : " + l)) {
                 LOG.debug("Critical");
             }
             // Exception keywords
             for (String j : Consts.KEYWORDS) {
-                if(l.contains(j)){
-                    if (keywordOccurrences.containsKey(j)){
+                if (l.contains(j)) {
+                    if (keywordOccurrences.containsKey(j)) {
                         keywordOccurrences.put(j, (keywordOccurrences.get(j) + 1));
                     } else {
                         keywordOccurrences.put(j, 1);
                     }
-                   // LOG.debug(l);
+                    // LOG.debug(l);
                 }
             }
         }
@@ -101,8 +100,8 @@ public class FileProcessManager {
         el.setOccurrenceMap(keywordOccurrences);
         ErrorLogMap.getInstance().put(el.getName(), el);
 
-        for (String s : el.getOccurrenceMap().keySet())
-            LOG.info(MessageFormat.format("Total number of {0} messages reported: {1}", s, String.valueOf(keywordOccurrences.get(s))));
+       /* for (String s : el.getOccurrenceMap().keySet())
+            LOG.info(MessageFormat.format("Total number of {0} messages reported: {1}", s, String.valueOf(keywordOccurrences.get(s))));   */
     }
 
     public String readFile(String path, Charset encoding) throws IOException {

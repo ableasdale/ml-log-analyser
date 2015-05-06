@@ -27,6 +27,12 @@ public class ErrorLog {
         return errorLogTxt;
     }
 
+
+    public List<String> getErrorLogHead() {
+        if (errorLogTxt.size() > 10000) return errorLogTxt.subList(0, 9999);
+        else return getErrorLogTxt();
+    }
+
     public void setErrorLogTxt(List<String> errorLogTxt) {
         this.errorLogTxt = errorLogTxt;
     }

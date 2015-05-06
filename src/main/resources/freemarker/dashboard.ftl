@@ -13,8 +13,23 @@
     <h3>Current file: <small>${errorlog.getName()}</small></h3>
 
     <div class="sixteen columns">
+
+
+    <dl>
+        <#assign el = errorlog.getOccurrenceMap()>
+        <#assign elkeys = el?keys>
+        <#list elkeys as elkey>
+            <dt><a href="#">${elkey}</a></dt>
+            <dd>${el[elkey]}</dd>
+        </#list>
+    </dl>
+
+
+
+
+
         <textarea id="errorlog">
-<#list errorlog.getErrorLogTxt() as item>${item}
+<#list errorlog.getErrorLogHead() as item>${item}
 </#list>
         </textarea>
     </div>

@@ -29,8 +29,8 @@ public class Test {
 
         File file = new File(Consts.DIRECTORY_PATH_WINDOWS);
         Collection<File> files = FileUtils.listFiles(file, null, true);
-        for (File file2 : files){
-            if(file2.getName().startsWith("ErrorLog")){
+        for (File file2 : files) {
+            if (file2.getName().startsWith("ErrorLog")) {
                 LOG.info(file2.getName());
                 fpm.processLog(file2);
             }

@@ -9,10 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.text.MessageFormat;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -56,9 +54,9 @@ public class RootResource extends BaseResource {
     @Produces(MediaType.TEXT_HTML)
     public Viewable getDashboard() {
         // is this a first run?
-        if (ErrorLogMap.getInstance().size() == 0){
+        if (ErrorLogMap.getInstance().size() == 0) {
             LOG.debug(MessageFormat.format("getDashboard() :: first run :: Rendering view for: {0}", Consts.HOST_OS));
-            if (Os.isWindows()){
+            if (Os.isWindows()) {
                 analysePath(Consts.DIRECTORY_PATH_WINDOWS);
             } else if (Os.isLinux()) {
                 analysePath(Consts.DIRECTORY_PATH_LINUX);
