@@ -13,6 +13,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.2.0/codemirror.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.2.0/codemirror.min.css" />
 <script>
+    // expanders
+    $(document).on('click', '.panel-heading span.clickable', function(e){
+        var $this = $(this);
+        if(!$this.hasClass('panel-collapsed')) {
+            $this.parents('.panel').find('.panel-body').slideUp();
+            $this.addClass('panel-collapsed');
+            $this.find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+        } else {
+            $this.parents('.panel').find('.panel-body').slideDown();
+            $this.removeClass('panel-collapsed');
+            $this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+        }
+    });
     $(function () {
         CodeMirror.fromTextArea(errorlog, {
             lineNumbers: true,
@@ -44,24 +57,6 @@
 
 <!-- TODO - DELETE BELOW -->
 
-
-<#if title = "Unique Threads">
-<script>
-    $(function () {
-        $(".expandable").hide();
-        $(".expander").click(function(e){
-            $(this).next(".expandable").slideToggle("fast", "swing", function(e){
-                if( $(this).is(":hidden") ) {
-                    // TODO - h4.expander works but can't seem to target the inner span - (.expander .span).. why is this??
-                    $(this).prev(".expander").html('Thread / Locations (Click to expand): [<span class="sign">+</span>]');
-                } else {
-                    $(this).prev(".expander").html('Thread / Locations (Click to expand): [<span class="sign">-</span>]');
-                }
-            });
-        });
-    });
-</script>
-</#if>
 <#if title = "Search">
 <script><#include "../vendor/chart.min.js"></script>
 <script>
@@ -99,22 +94,6 @@
         new Chart(ctx).Line(data, options);
         $("#chart p").hide();
     }
-    $(function () {
-        // TODO - highlight doesn't work nicely with prism - so it's been removed.
-        // Maybe find a way to do this for keywords with prismjs at some stage?
-        // $("code.language-cpp").highlight("<#--${searchterm}-->");
-        // $(".highlight");
-        $(".expandable").hide();
-        $(".expander").click(function(e){
-            $(this).next(".expandable").slideToggle("fast", "swing", function(e){
-                if( $(this).is(":hidden") ) { 
-                	// TODO - h4.expander works but can't seem to target the inner span - (.expander .span).. why is this??
-                	$(this).prev(".expander").html('Thread / Locations (Click to expand): [<span class="sign">+</span>]');                	
-                } else {
-                	$(this).prev(".expander").html('Thread / Locations (Click to expand): [<span class="sign">-</span>]');
-                }
-            });
-        });
         chart();
     });
 </script>
@@ -141,6 +120,13 @@
 
 <style type="text/css">
 
+    /* expander css*/
+
+    .clickable{
+        cursor: pointer;
+    }
+
+    /* end expander css */
 
 
     .content a {
