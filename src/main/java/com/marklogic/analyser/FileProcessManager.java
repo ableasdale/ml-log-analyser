@@ -72,7 +72,7 @@ public class FileProcessManager {
                     if (start >= 4) {
                         idx = start - 3;
                     } else {
-                        idx = 1;
+                        idx = 0;
                     }
 
                     for (int i = 0; i < Consts.RESTART_TOTAL_LINES; i++) {
