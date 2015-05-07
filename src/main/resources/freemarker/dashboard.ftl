@@ -56,11 +56,20 @@
 
     <div class="panel panel-success">
         <div class="panel-heading">
-            <strong>Trace Events</strong> <small>TODO</small>
+            <strong>Trace Events</strong> <small>All user specified diagnostic trace events grouped by event type (id)</small>
             <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
         </div>
         <div class="panel-body">
-
+        <#assign el = errorlog.getTraceEventMessages()>
+        <#assign elkeys = el?keys>
+        <#list elkeys as elkey>
+            <#assign itemlist = el[elkey]>
+            <div class="form-group">
+                <label for="${elkey}">${elkey}: (${itemlist?size} line[s])</label>
+                <textarea class="form-control" rows="5" id="${elkey}"><#list itemlist as item>${item}
+</#list></textarea>
+            </div>
+        </#list>
         </div>
     </div>
 

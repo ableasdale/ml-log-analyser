@@ -18,6 +18,7 @@ public class ErrorLog {
     private List<String> errorLogTxt;
     private Map<String, List<String>> occurrenceMap;
     private Map<String, List<String>> otherMessages;
+    private Map<String, List<String>> traceEventMessages;
 
     public String getName() {
         return name;
@@ -56,6 +57,14 @@ public class ErrorLog {
         this.otherMessages = otherMessages;
     }
 
+    public Map<String, List<String>> getTraceEventMessages() {
+        return traceEventMessages;
+    }
+
+    public void setTraceEventMessages(Map<String, List<String>> traceEventMessages) {
+        this.traceEventMessages = traceEventMessages;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -67,6 +76,7 @@ public class ErrorLog {
         if (!name.equals(errorLog.name)) return false;
         if (!occurrenceMap.equals(errorLog.occurrenceMap)) return false;
         if (!otherMessages.equals(errorLog.otherMessages)) return false;
+        if (!traceEventMessages.equals(errorLog.traceEventMessages)) return false;
 
         return true;
     }
@@ -77,6 +87,7 @@ public class ErrorLog {
         result = 31 * result + errorLogTxt.hashCode();
         result = 31 * result + occurrenceMap.hashCode();
         result = 31 * result + otherMessages.hashCode();
+        result = 31 * result + traceEventMessages.hashCode();
         return result;
     }
 }

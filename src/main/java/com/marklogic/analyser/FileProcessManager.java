@@ -54,6 +54,7 @@ public class FileProcessManager {
 
         Map<String, List<String>> keywordOccurrences = new HashMap<String, List<String>>();
         Map<String, List<String>> otherMessages = new HashMap<String, List<String>>();
+        Map<String, List<String>> traceEvents = new HashMap<String, List<String>>();
         List<String> restarts = new ArrayList<String>();
         List<String> lines = el.getErrorLogTxt();
 
@@ -81,12 +82,24 @@ public class FileProcessManager {
                     }
                     restarts.add("------------");
                 }
-                // TODO:: below is not implemented yet
+                // Gather and sort all trace events found in the ErrorLog
                 if (l.contains("Event:")) {
-                    // TODO - do we want to break these up into separate mappable items?
-                    LOG.debug("* Event * : " + l);
-                }
-                if (l.contains("Warning: ") || l.contains("Notice: ") || l.contains("Critical: ") ) {
+                    String temp = l.split("Event:id=")[1];
+                    String evtType = temp.substring(0,temp.indexOf(']'));
+                    LOG.debug("* Event * : " + evtType);
+
+                    // TODO - make this a generic function which you pass a Map and a String - it's used in a few places now...
+                    if(traceEvents.containsKey(evtType)){
+                        List<String> lst = traceEvents.get(evtType);
+                        lst.add(l);
+                        traceEvents.put(evtType, lst);
+                    } else {
+                        List<String> lst =  new ArrayList<String>();
+                        lst.add(l);
+                        traceEvents.put(evtType, lst);
+                    }
+
+                } else if (l.contains("Warning: ") || l.contains("Notice: ") || l.contains("Critical: ") ) {
                     String msgType = l.split(" ")[2];
                     msgType = msgType.substring(0, msgType.length() -1);
 
@@ -123,6 +136,7 @@ public class FileProcessManager {
         otherMessages.put("Restarts", restarts);
         el.setOtherMessages(otherMessages);
         el.setOccurrenceMap(keywordOccurrences);
+        el.setTraceEventMessages(traceEvents);
         ErrorLogMap.getInstance().put(el.getName(), el);
 
        /* for (String s : el.getOccurrenceMap().keySet())

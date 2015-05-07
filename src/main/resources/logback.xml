@@ -8,6 +8,7 @@
 
     <logger name="ch.qos.logback" level="DEBUG" />
     <logger name="org.jbehave" level="DEBUG" />
+    <logger name="com.marklogic.analyser" level="INFO" />
 
     <root level="debug">
         <appender-ref ref="STDOUT" />
