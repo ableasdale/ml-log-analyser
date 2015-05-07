@@ -41,7 +41,7 @@ public class RootResource extends BaseResource {
         map.put("title", "Dashboard and Overview");
         map.put("errorlog", ErrorLogMap.getInstance().get(id));
         map.put("errorlogs", ErrorLogMap.getInstance());
-        map.put ("lines", Consts.MAX_LINES_FOR_LOG_PREVIEW);
+        map.put("lines", Consts.MAX_LINES_FOR_LOG_PREVIEW);
         return map;
     }
 

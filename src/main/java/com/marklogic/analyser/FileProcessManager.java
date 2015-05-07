@@ -40,7 +40,6 @@ public class FileProcessManager {
 
     public void processLog(File file) throws IOException {
         LOG.info(MessageFormat.format("Processing ErrorLog file: {0}", file.getName()));
-
         String fileStr = readFile(file.getPath(), StandardCharsets.UTF_8);
         ErrorLog el = new ErrorLog();
         el.setName(file.getName());
@@ -48,7 +47,6 @@ public class FileProcessManager {
         processErrorLog(el);
         LOG.info(MessageFormat.format("Completed processing ErrorLog file: {0}", file.getName()));
     }
-
 
     private void processErrorLog(ErrorLog el) {
 
@@ -59,10 +57,10 @@ public class FileProcessManager {
         List<String> lines = el.getErrorLogTxt();
 
         for (String l : lines) {
-            // Ignore some verbose logging:
-            if(l.contains("Fine: ") || l.contains("Finer: ") || l.contains("Finest: ")) {
+            // Ignore some verbose level logging:
+            if (l.contains("Fine: ") || l.contains("Finer: ") || l.contains("Finest: ")) {
                 // || l.contains("Debug: " ?
-                // nothing to see here: done
+                // Nothing to list here: do no further checking
             } else {
                 if (l.contains("Starting MarkLogic")) {
                     int start = lines.indexOf(l);
@@ -85,49 +83,19 @@ public class FileProcessManager {
                 // Gather and sort all trace events found in the ErrorLog
                 if (l.contains("Event:")) {
                     String temp = l.split("Event:id=")[1];
-                    String evtType = temp.substring(0,temp.indexOf(']'));
-                    LOG.debug("* Event * : " + evtType);
-
-                    // TODO - make this a generic function which you pass a Map and a String - it's used in a few places now...
-                    if(traceEvents.containsKey(evtType)){
-                        List<String> lst = traceEvents.get(evtType);
-                        lst.add(l);
-                        traceEvents.put(evtType, lst);
-                    } else {
-                        List<String> lst =  new ArrayList<String>();
-                        lst.add(l);
-                        traceEvents.put(evtType, lst);
-                    }
-
-                } else if (l.contains("Warning: ") || l.contains("Notice: ") || l.contains("Critical: ") ) {
+                    String evtType = temp.substring(0, temp.indexOf(']'));
+                    LOG.debug(MessageFormat.format("Trace Event Found: {0}", evtType));
+                    checkAndAddItem(traceEvents, evtType, l);
+                } else if (l.contains("Warning: ") || l.contains("Notice: ") || l.contains("Critical: ")) {
                     String msgType = l.split(" ")[2];
-                    msgType = msgType.substring(0, msgType.length() -1);
-
+                    msgType = msgType.substring(0, msgType.length() - 1);
                     LOG.debug(MessageFormat.format("Important {0} level ErrorLog message found", msgType));
-                    if(otherMessages.containsKey(msgType)){
-                        List<String> lst = otherMessages.get(msgType);
-                        lst.add(l);
-                        otherMessages.put(msgType, lst);
-                    } else {
-                        List<String> lst =  new ArrayList<String>();
-                        lst.add(l);
-                        otherMessages.put(msgType, lst);
-                    }
+                    checkAndAddItem(otherMessages, msgType, l);
                 }
-
-                // Exception keywords
+                // Check for Exception keywords
                 for (String j : Consts.KEYWORDS) {
                     if (l.contains(j)) {
-                        if (keywordOccurrences.containsKey(j)) {
-                            List<String> lst = keywordOccurrences.get(j);
-                            lst.add(l);
-                            keywordOccurrences.put(j, lst);
-                        } else {
-                            List<String> lst =  new ArrayList<String>();
-                            lst.add(l);
-                            keywordOccurrences.put(j, lst);
-                        }
-                        // LOG.debug(l);
+                        checkAndAddItem(keywordOccurrences, j, l);
                     }
                 }
             }
@@ -148,4 +116,15 @@ public class FileProcessManager {
         return new String(encoded, encoding);
     }
 
+    public void checkAndAddItem(Map<String, List<String>> map, String key, String value) {
+        if (map.containsKey(key)) {
+            List<String> lst = map.get(key);
+            lst.add(value);
+            map.put(key, lst);
+        } else {
+            List<String> lst = new ArrayList<String>();
+            lst.add(value);
+            map.put(key, lst);
+        }
+    }
 }

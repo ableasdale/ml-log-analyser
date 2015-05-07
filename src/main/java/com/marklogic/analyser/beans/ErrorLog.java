@@ -33,7 +33,8 @@ public class ErrorLog {
     }
 
     public List<String> getErrorLogHead() {
-        if (errorLogTxt.size() > Consts.MAX_LINES_FOR_LOG_PREVIEW) return errorLogTxt.subList(0, Consts.MAX_LINES_FOR_LOG_PREVIEW);
+        if (errorLogTxt.size() > Consts.MAX_LINES_FOR_LOG_PREVIEW)
+            return errorLogTxt.subList(0, Consts.MAX_LINES_FOR_LOG_PREVIEW);
         else return getErrorLogTxt();
     }
 
