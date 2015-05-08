@@ -24,6 +24,11 @@
         </div>
     </div>
 
+    <a href="/">
+    <button type="button" class="btn btn-success" aria-label="Left Align">
+        <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Back to Dashboard
+    </button></a>
+
 </div>
 <#include "footer.ftl">
 </body>
