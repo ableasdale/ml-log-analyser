@@ -28,7 +28,7 @@ public class Server {
     public static final URI BASE_URI = getBaseURI();
 
     private static URI getBaseURI() {
-        return UriBuilder.fromUri("http://localhost/")
+        return UriBuilder.fromUri("http://0.0.0.0")
                 .port(Consts.GRIZZLY_HTTP_PORT).build();
     }
 
