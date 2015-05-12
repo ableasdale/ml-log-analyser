@@ -45,7 +45,7 @@ public class Server {
         HttpServer httpServer = startServer();
         LOG.info("HTTP Application com.marklogic.analyser.Server Ready: " + BASE_URI);
         LOG.info("WADL Definition available at: " + BASE_URI
-                + "application.wadl");
+                + "/application.wadl");
         LOG.info("Press enter to stop the application server...");
         System.in.read();
         httpServer.stop();
