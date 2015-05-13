@@ -139,6 +139,7 @@ public class BaseResource {
 
 
     protected void analysePath(String path) {
+        LOG.info("Working with file path: "+path);
         // This should be a singleton!
         FileProcessManager fpm = new FileProcessManager();
         File file = new File(path);
