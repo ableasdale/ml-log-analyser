@@ -57,7 +57,7 @@
 
 <!-- TODO - DELETE BELOW -->
 
-<#if title = "Search">
+<#if title = "Seaddrch">
 <script><#include "../vendor/chart.min.js"></script>
 <script>
     function chart() {

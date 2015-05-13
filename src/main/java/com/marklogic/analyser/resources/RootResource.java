@@ -53,8 +53,6 @@ public class RootResource extends BaseResource {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public Viewable getDashboard() {
-
-        //stackRecords = identifyCarriedOverStacks(pstacks);
         // renders the URI using "src/main/resources/freemarker/dashboard.ftl"
         return new Viewable("/dashboard", createModel("ErrorLog.txt"));
     }
