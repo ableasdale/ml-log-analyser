@@ -35,6 +35,7 @@
     <div class="panel panel-info">
         <div class="panel-heading">
             <strong>Occurrences of important Exception messages</strong> <small>Known exception messages detected and thrown by the Server</small>
+            <!-- TODO - date ranges for occurrences -->
             <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
         </div>
         <div class="panel-body">

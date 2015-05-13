@@ -61,9 +61,10 @@ public class RootResource extends BaseResource {
                 analysePath(Consts.DIRECTORY_PATH_WINDOWS);
             } else if (Os.isLinux()) {
                 analysePath(Consts.DIRECTORY_PATH_LINUX);
+            } else if (Os.isMac()){
+                analysePath(Consts.DIRECTORY_PATH_OSX);
             }
-            // TODO - Add OS X support (and maybe Solaris?)
-
+            // TODO - Add Solaris support one day?
         }
 
         //stackRecords = identifyCarriedOverStacks(pstacks);
