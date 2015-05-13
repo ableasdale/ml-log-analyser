@@ -2,6 +2,7 @@ package com.marklogic.analyser.resources;
 
 import com.marklogic.analyser.beans.ErrorLog;
 import com.marklogic.analyser.beans.ErrorLogMap;
+import com.marklogic.analyser.util.Consts;
 import com.sun.jersey.api.view.Viewable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,7 @@ public class ReportingResource extends BaseResource {
     private static final Logger LOG = LoggerFactory.getLogger(ReportingResource.class);
     private static Map<String, Integer> aggregateValues = new HashMap<String, Integer>();
 
+
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getDashboard() {
@@ -34,8 +36,8 @@ public class ReportingResource extends BaseResource {
         for (String s : ErrorLogMap.getInstance().keySet()  ){
             LOG.info("Creating Report for..."+s);
             ErrorLog e = ErrorLogMap.getInstance().get(s);
-            sb.append("Filename\t:\t"+s+"\n");
-            sb.append("Total Restarts\t:\t"+e.getTotalRestarts()+"\n");
+            sb.append("Filename"+Consts.DELIM +s+"\n");
+            sb.append("Total Restarts"+ Consts.DELIM +e.getTotalRestarts()+"\n");
             appendStringBuilderWithMapItems(sb, e.getOtherMessages());
             appendStringBuilderWithMapItems(sb, e.getOccurrenceMap());
             aggregateOccurrences(e.getOccurrenceMap());
@@ -44,7 +46,7 @@ public class ReportingResource extends BaseResource {
         sb.append("Aggregate report for all ErrorLog files\n");
         sb.append("------------\n");
         for (String t : aggregateValues.keySet()) {
-            sb.append(t+"\t:\t"+ aggregateValues.get(t)+"\n");
+            sb.append(t+Consts.DELIM+ aggregateValues.get(t)+"\n");
         }
         return sb.toString();
     }
@@ -61,7 +63,7 @@ public class ReportingResource extends BaseResource {
 
     private StringBuilder appendStringBuilderWithMapItems(StringBuilder sb, Map<String, List<String>> map){
         for (String t : map.keySet()) {
-            sb.append(t+"\t:\t"+ map.get(t).size()+"\n");
+            sb.append(t + Consts.DELIM + map.get(t).size()+"\n");
         }
         return sb;
     }
