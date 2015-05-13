@@ -106,7 +106,7 @@
 
 
     <h3>ErrorLog below <small>(Up to ${lines} lines)</small></h3>
-    <div class="sixteen columns">
+    <div class="row bottom-spaced">
         <div class="form-group">
             <textarea class="form-control" rows="5" id="errorlog">
 <#list errorlog.getErrorLogHead() as item>${item}
@@ -114,6 +114,8 @@
         </textarea>
         </div>
     </div>
+
+
 
 </div>
 <#include "footer.ftl">
