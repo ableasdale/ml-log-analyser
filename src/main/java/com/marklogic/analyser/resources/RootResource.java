@@ -1,15 +1,14 @@
 package com.marklogic.analyser.resources;
 
 
+import com.marklogic.analyser.beans.ErrorLogMap;
 import com.marklogic.analyser.util.Consts;
-import com.marklogic.analyser.util.Os;
 import com.sun.jersey.api.view.Viewable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 

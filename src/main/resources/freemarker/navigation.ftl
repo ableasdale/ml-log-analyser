@@ -8,6 +8,7 @@
         <li class="active"><#else>
         <li></#if><a href="/upload">Upload ErrorLog(s)</a></li>
 
+        <li><a href="/report">Report</a></li>
             <!--
         <#if title = "PStack Collections">
         <li class="active"><#else>

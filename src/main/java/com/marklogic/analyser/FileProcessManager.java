@@ -1,7 +1,7 @@
 package com.marklogic.analyser;
 
 import com.marklogic.analyser.beans.ErrorLog;
-import com.marklogic.analyser.resources.ErrorLogMap;
+import com.marklogic.analyser.beans.ErrorLogMap;
 import com.marklogic.analyser.util.Consts;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;

@@ -1,6 +1,7 @@
 package com.marklogic.analyser.resources;
 
 import com.marklogic.analyser.FileProcessManager;
+import com.marklogic.analyser.beans.ErrorLogMap;
 import com.marklogic.analyser.util.Consts;
 import com.marklogic.analyser.util.Os;
 import com.sun.jersey.api.view.Viewable;
