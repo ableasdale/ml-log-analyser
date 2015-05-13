@@ -49,7 +49,7 @@ public class ReportingResource extends BaseResource {
     public String getDashboard() {
         StringBuilder sb = new StringBuilder();
         for (String s : ErrorLogMap.getInstance().keySet()) {
-            LOG.info("Creating Report for..." + s);
+            LOG.debug("Creating Report for..." + s);
             ErrorLog e = ErrorLogMap.getInstance().get(s);
             sb.append(formattedLine("Filename", s));
             sb.append(formattedLine("Total Restarts", Integer.toString(e.getTotalRestarts())));
@@ -77,12 +77,12 @@ public class ReportingResource extends BaseResource {
     }
 
     private StringBuilder appendStringBuilderWithMapItems(StringBuilder sb, Map<String, List<String>> map) {
-        for (String t : map.keySet()) {
+        SortedSet<String> keys = new TreeSet<String>(map.keySet());
+        for (String t : keys) {
             sb.append(formattedLine(t,Integer.toString(map.get(t).size())));
         }
         return sb;
     }
-
 
     private String formattedLine(String key, String value){
         return String.format(Consts.FORMAT, key, value);
