@@ -22,4 +22,5 @@ public class Consts {
     public static String HOST_OS = System.getProperty("os.name").toLowerCase();
     public static int MAX_LINES_FOR_LOG_PREVIEW = 15000;
     public static String DELIM = "\t\t\t:\t";
+    public static String FORMAT = "%-25s%s%n";
 }

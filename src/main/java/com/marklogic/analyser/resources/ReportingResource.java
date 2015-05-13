@@ -51,8 +51,8 @@ public class ReportingResource extends BaseResource {
         for (String s : ErrorLogMap.getInstance().keySet()) {
             LOG.info("Creating Report for..." + s);
             ErrorLog e = ErrorLogMap.getInstance().get(s);
-            sb.append("Filename" + Consts.DELIM + s + "\n");
-            sb.append("Total Restarts" + Consts.DELIM + e.getTotalRestarts() + "\n");
+            sb.append(formattedLine("Filename", s));
+            sb.append(formattedLine("Total Restarts", Integer.toString(e.getTotalRestarts())));
             appendStringBuilderWithMapItems(sb, e.getOtherMessages());
             appendStringBuilderWithMapItems(sb, e.getOccurrenceMap());
             aggregateOccurrences(e.getOccurrenceMap());
@@ -61,7 +61,7 @@ public class ReportingResource extends BaseResource {
         sb.append("Aggregate report for all ErrorLog files\n");
         sb.append("------------\n");
         for (String t : sortMapByIntegerSize(aggregateValues, false).keySet()) {
-            sb.append(t + Consts.DELIM + aggregateValues.get(t) + "\n");
+            sb.append(formattedLine(t,Integer.toString(aggregateValues.get(t))));
         }
         return sb.toString();
     }
@@ -78,10 +78,14 @@ public class ReportingResource extends BaseResource {
 
     private StringBuilder appendStringBuilderWithMapItems(StringBuilder sb, Map<String, List<String>> map) {
         for (String t : map.keySet()) {
-            sb.append(t + Consts.DELIM + map.get(t).size() + "\n");
+            sb.append(formattedLine(t,Integer.toString(map.get(t).size())));
         }
         return sb;
     }
 
+
+    private String formattedLine(String key, String value){
+        return String.format(Consts.FORMAT, key, value);
+    }
 
 }
