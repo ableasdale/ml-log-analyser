@@ -2,7 +2,6 @@ package com.marklogic.analyser.resources;
 
 import com.marklogic.analyser.beans.ErrorLog;
 import com.marklogic.analyser.beans.ErrorLogMap;
-import com.marklogic.analyser.util.Consts;
 import com.sun.jersey.api.view.Viewable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

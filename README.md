@@ -2,6 +2,7 @@
 
 Allows a MarkLogic team to monitor and summarise multiple ErrorLog files to aid in the analysis of a large number of events (over multiple nodes) very quickly.  The application will summarise restarts, all known exceptions thrown, trace events and Warning and Critical level error messages.
 
+* Allows search across multiple log files for key terms
 * Supports individual ErrorLog files as large as 4GB in size
 * Provides a summary of all restarts found and will extract lines before and after the restarts for easy viewing
 * Allows for Drag and Drop upload for multiple ErrorLog files
