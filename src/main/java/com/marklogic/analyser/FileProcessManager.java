@@ -80,8 +80,12 @@ public class FileProcessManager {
                     }
                     restarts.add("------------");
                 }
-                // Gather and sort all trace events found in the ErrorLog
-                if (l.contains("Event:")) {
+                // Gather and sort all Audit and trace events found in the ErrorLog
+                if (l.contains("AuditEvent")) {
+                    //LOG.info(l);
+                    // TODO - may want to break these down further
+                    checkAndAddItem(otherMessages, "AuditEvent", l);
+                } else if (l.contains("Event:")) {
                     String temp = l.split("Event:id=")[1];
                     String evtType = temp.substring(0, temp.indexOf(']'));
                     LOG.debug(MessageFormat.format("Trace Event Found: {0}", evtType));

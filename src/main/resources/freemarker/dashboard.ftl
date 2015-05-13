@@ -14,7 +14,7 @@
 
     <div class="panel panel-danger">
         <div class="panel-heading">
-            <strong>Restarts and high level ErrorLog messages</strong> <small>Higher ErrorLog level messages and restarts</small>
+            <strong>Restarts, Audit Events and higher level ErrorLog messages</strong> <small>All <em>Warning</em> and <em>Critical</em> ErrorLog level messages and restarts</small>
             <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
         </div>
         <div class="panel-body">
