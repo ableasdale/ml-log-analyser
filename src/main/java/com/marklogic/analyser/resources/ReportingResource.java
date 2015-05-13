@@ -3,7 +3,6 @@ package com.marklogic.analyser.resources;
 import com.marklogic.analyser.beans.ErrorLog;
 import com.marklogic.analyser.beans.ErrorLogMap;
 import com.marklogic.analyser.util.Consts;
-import com.sun.jersey.api.view.Viewable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,9 +10,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,16 +25,34 @@ public class ReportingResource extends BaseResource {
     private static final Logger LOG = LoggerFactory.getLogger(ReportingResource.class);
     private static Map<String, Integer> aggregateValues = new HashMap<String, Integer>();
 
+    private static Map<String, Integer> sortMapByIntegerSize(Map<String, Integer> map, final boolean order) {
+        List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(map.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            public int compare(Map.Entry<String, Integer> o1,
+                               Map.Entry<String, Integer> o2) {
+                if (order) {
+                    return o1.getValue().compareTo(o2.getValue());
+                } else {
+                    return o2.getValue().compareTo(o1.getValue());
+                }
+            }
+        });
+        Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
+        for (Map.Entry<String, Integer> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedMap;
+    }
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getDashboard() {
         StringBuilder sb = new StringBuilder();
-        for (String s : ErrorLogMap.getInstance().keySet()  ){
-            LOG.info("Creating Report for..."+s);
+        for (String s : ErrorLogMap.getInstance().keySet()) {
+            LOG.info("Creating Report for..." + s);
             ErrorLog e = ErrorLogMap.getInstance().get(s);
-            sb.append("Filename"+Consts.DELIM +s+"\n");
-            sb.append("Total Restarts"+ Consts.DELIM +e.getTotalRestarts()+"\n");
+            sb.append("Filename" + Consts.DELIM + s + "\n");
+            sb.append("Total Restarts" + Consts.DELIM + e.getTotalRestarts() + "\n");
             appendStringBuilderWithMapItems(sb, e.getOtherMessages());
             appendStringBuilderWithMapItems(sb, e.getOccurrenceMap());
             aggregateOccurrences(e.getOccurrenceMap());
@@ -45,15 +60,15 @@ public class ReportingResource extends BaseResource {
         }
         sb.append("Aggregate report for all ErrorLog files\n");
         sb.append("------------\n");
-        for (String t : aggregateValues.keySet()) {
-            sb.append(t+Consts.DELIM+ aggregateValues.get(t)+"\n");
+        for (String t : sortMapByIntegerSize(aggregateValues, false).keySet()) {
+            sb.append(t + Consts.DELIM + aggregateValues.get(t) + "\n");
         }
         return sb.toString();
     }
 
-    private void aggregateOccurrences(Map<String, List<String>> map){
+    private void aggregateOccurrences(Map<String, List<String>> map) {
         for (String t : map.keySet()) {
-            if(aggregateValues.containsKey(t)){
+            if (aggregateValues.containsKey(t)) {
                 aggregateValues.put(t, (aggregateValues.get(t) + map.get(t).size()));
             } else {
                 aggregateValues.put(t, map.get(t).size());
@@ -61,13 +76,12 @@ public class ReportingResource extends BaseResource {
         }
     }
 
-    private StringBuilder appendStringBuilderWithMapItems(StringBuilder sb, Map<String, List<String>> map){
+    private StringBuilder appendStringBuilderWithMapItems(StringBuilder sb, Map<String, List<String>> map) {
         for (String t : map.keySet()) {
-            sb.append(t + Consts.DELIM + map.get(t).size()+"\n");
+            sb.append(t + Consts.DELIM + map.get(t).size() + "\n");
         }
         return sb;
     }
-
 
 
 }
