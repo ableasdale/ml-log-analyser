@@ -54,18 +54,6 @@ public class RootResource extends BaseResource {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public Viewable getDashboard() {
-        // is this a first run?
-        if (ErrorLogMap.getInstance().size() == 0) {
-            LOG.debug(MessageFormat.format("getDashboard() :: first run :: Rendering view for: {0}", Consts.HOST_OS));
-            if (Os.isWindows()) {
-                analysePath(Consts.DIRECTORY_PATH_WINDOWS);
-            } else if (Os.isLinux()) {
-                analysePath(Consts.DIRECTORY_PATH_LINUX);
-            } else if (Os.isMac()){
-                analysePath(Consts.DIRECTORY_PATH_OSX);
-            }
-            // TODO - Add Solaris support one day?
-        }
 
         //stackRecords = identifyCarriedOverStacks(pstacks);
         // renders the URI using "src/main/resources/freemarker/dashboard.ftl"

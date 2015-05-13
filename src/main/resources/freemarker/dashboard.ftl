@@ -5,10 +5,34 @@
 
 <div class="container">
 
-    <div class="sixteen columns">
+    <div class="row">
         <h2>MarkLogic ErrorLog Analyser <small>Dashboard</small></h2>
         <#include "navigation.ftl">
         <h3>Current file: <small>${errorlog.getName()} (${errorlog.getErrorLogTxt()?size} line(s))</small></h3>
+    </div>
+
+
+    <div class="row">
+        <h3>Summary of occurrences:</h3>
+        <dl class="dl-horizontal">
+            <dt>Total restarts</dt>
+            <dd>${errorlog.getTotalRestarts()}</dd>
+        <#assign el = errorlog.getOtherMessages()>
+        <#assign elkeys = el?keys>
+        <#list elkeys as elkey>
+    <dt>${elkey}</dt>
+    <dd>${el[elkey]?size}</dd>
+        </#list>
+
+        <#assign el = errorlog.getOccurrenceMap()>
+        <#assign elkeys = el?keys>
+
+            <#list elkeys as elkey>
+                <dt>${elkey}</dt>
+                <dd>${el[elkey]?size}</dd>
+            </#list>
+
+        </dl>
     </div>
 
 
@@ -28,6 +52,12 @@
 </#list></textarea>
             </div>
         </#list>
+
+            <div class="form-group">
+                <label for="restart-txt">Log entries surrounding MarkLogic restarts</label>
+                <textarea class="form-control" rows="5" id="restart-txt"><#list errorlog.getErrorLogRestartTxt() as item>${item}
+</#list></textarea>
+            </div>
 
         </div>
     </div>

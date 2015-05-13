@@ -53,6 +53,7 @@ public class FileProcessManager {
         Map<String, List<String>> keywordOccurrences = new HashMap<String, List<String>>();
         Map<String, List<String>> otherMessages = new HashMap<String, List<String>>();
         Map<String, List<String>> traceEvents = new HashMap<String, List<String>>();
+        int totalRestarts = 0;
         List<String> restarts = new ArrayList<String>();
         List<String> lines = el.getErrorLogTxt();
 
@@ -63,6 +64,7 @@ public class FileProcessManager {
                 // Nothing to list here: do no further checking
             } else {
                 if (l.contains("Starting MarkLogic")) {
+                    totalRestarts += 1;
                     int start = lines.indexOf(l);
                     int idx;
                     LOG.debug(MessageFormat.format("Array index for restart message: {0}", String.valueOf(start)));
@@ -105,8 +107,9 @@ public class FileProcessManager {
             }
         }
 
-        otherMessages.put("Restarts", restarts);
+        el.setErrorLogRestartTxt(restarts);
         el.setOtherMessages(otherMessages);
+        el.setTotalRestarts(totalRestarts);
         el.setOccurrenceMap(keywordOccurrences);
         el.setTraceEventMessages(traceEvents);
         ErrorLogMap.getInstance().put(el.getName(), el);

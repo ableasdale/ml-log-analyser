@@ -15,7 +15,9 @@ import java.util.Map;
 public class ErrorLog {
 
     private String name;
+    private int totalRestarts;
     private List<String> errorLogTxt;
+    private List<String> errorLogRestartTxt;
     private Map<String, List<String>> occurrenceMap;
     private Map<String, List<String>> otherMessages;
     private Map<String, List<String>> traceEventMessages;
@@ -26,6 +28,14 @@ public class ErrorLog {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getTotalRestarts() {
+        return totalRestarts;
+    }
+
+    public void setTotalRestarts(int totalRestarts) {
+        this.totalRestarts = totalRestarts;
     }
 
     public List<String> getErrorLogTxt() {
@@ -40,6 +50,14 @@ public class ErrorLog {
 
     public void setErrorLogTxt(List<String> errorLogTxt) {
         this.errorLogTxt = errorLogTxt;
+    }
+
+    public List<String> getErrorLogRestartTxt() {
+        return errorLogRestartTxt;
+    }
+
+    public void setErrorLogRestartTxt(List<String> errorLogRestartTxt) {
+        this.errorLogRestartTxt = errorLogRestartTxt;
     }
 
     public Map<String, List<String>> getOccurrenceMap() {
@@ -69,10 +87,12 @@ public class ErrorLog {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ErrorLog)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         ErrorLog errorLog = (ErrorLog) o;
 
+        if (totalRestarts != errorLog.totalRestarts) return false;
+        if (!errorLogRestartTxt.equals(errorLog.errorLogRestartTxt)) return false;
         if (!errorLogTxt.equals(errorLog.errorLogTxt)) return false;
         if (!name.equals(errorLog.name)) return false;
         if (!occurrenceMap.equals(errorLog.occurrenceMap)) return false;
@@ -85,7 +105,9 @@ public class ErrorLog {
     @Override
     public int hashCode() {
         int result = name.hashCode();
+        result = 31 * result + totalRestarts;
         result = 31 * result + errorLogTxt.hashCode();
+        result = 31 * result + errorLogRestartTxt.hashCode();
         result = 31 * result + occurrenceMap.hashCode();
         result = 31 * result + otherMessages.hashCode();
         result = 31 * result + traceEventMessages.hashCode();

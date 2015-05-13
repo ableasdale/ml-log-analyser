@@ -1,6 +1,8 @@
 package com.marklogic.analyser.resources;
 
 import com.marklogic.analyser.FileProcessManager;
+import com.marklogic.analyser.util.Consts;
+import com.marklogic.analyser.util.Os;
 import com.sun.jersey.api.view.Viewable;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -35,6 +37,21 @@ public class BaseResource {
     protected UriInfo uriInfo;
 
     public List<File> files = new ArrayList<File>();
+
+    public BaseResource() {
+        // is this a first run?
+        if (ErrorLogMap.getInstance().size() == 0) {
+            LOG.info(MessageFormat.format("Base Resource :: Constructor - First Run :: OS detected: {0}", Consts.HOST_OS));
+            if (Os.isWindows()) {
+                analysePath(Consts.DIRECTORY_PATH_WINDOWS);
+            } else if (Os.isLinux()) {
+                analysePath(Consts.DIRECTORY_PATH_LINUX);
+            } else if (Os.isMac()){
+                analysePath(Consts.DIRECTORY_PATH_OSX);
+            }
+            // TODO - Add Solaris support one day?
+        }
+    }
 
 
 //	public List<PStackFrame> pstacks = PStackMovies.getInstance();
