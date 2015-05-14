@@ -20,7 +20,7 @@
         <#assign el = errorlog.getOtherMessages()>
         <#assign elkeys = el?keys>
         <#list elkeys as elkey>
-    <dt>${elkey}</dt>
+    <dt><a href="/search/${elkey}" title="Search all Logs for ${elkey} messages">${elkey}</a></dt>
     <dd>${el[elkey]?size}</dd>
         </#list>
 
@@ -28,7 +28,7 @@
         <#assign elkeys = el?keys>
 
             <#list elkeys as elkey>
-                <dt>${elkey}</dt>
+                <dt><a href="/search/${elkey}" title="Search all Logs for ${elkey} messages">${elkey}</a></dt>
                 <dd>${el[elkey]?size}</dd>
             </#list>
 
@@ -47,7 +47,7 @@
         <#list elkeys as elkey>
             <#assign itemlist = el[elkey]>
             <div class="form-group">
-                <label for="${elkey}">${elkey}: (${itemlist?size} line[s])</label>
+                <label for="${elkey}"><a href="/search/${elkey}" title="Search all Logs for ${elkey} messages">${elkey}</a>: (${itemlist?size} line[s])</label>
                 <textarea class="form-control" rows="5" id="${elkey}"><#list itemlist as item>${item}
 </#list></textarea>
             </div>
@@ -75,7 +75,7 @@
         <#list elkeys as elkey>
             <#assign itemlist = el[elkey]>
             <div class="form-group">
-                <label for="${elkey}">${elkey}: (${itemlist?size} occurrence(s))</label>
+                <label for="${elkey}"><a href="/search/${elkey}" title="Search all Logs for ${elkey} messages">${elkey}</a>: (${itemlist?size} occurrence(s))</label>
                 <textarea class="form-control" rows="5" id="${elkey}"><#list itemlist as item>${item}
 </#list></textarea>
             </div>
@@ -96,7 +96,7 @@
         <#list elkeys as elkey>
             <#assign itemlist = el[elkey]>
             <div class="form-group">
-                <label for="${elkey}">${elkey}: (${itemlist?size} line[s])</label>
+                <label for="${elkey}"><a href="/search/${elkey}" title="Search all Logs for ${elkey} messages">${elkey}</a>: (${itemlist?size} line[s])</label>
                 <textarea class="form-control" rows="5" id="${elkey}"><#list itemlist as item>${item}
 </#list></textarea>
             </div>

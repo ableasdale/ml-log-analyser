@@ -10,10 +10,6 @@
     <#include "navigation.ftl">
     </div>
 
-    <!-- h1>MarkLogic PStack Tools : Upload PStack Movie</h1>
-    <h2>Choose a PStack Movie file to process:</h2 -->
-
-
     <div class="panel panel-default">
         <div class="panel-heading"><strong>Upload Files</strong> <small>Bootstrap files upload</small></div>
         <div class="panel-body">

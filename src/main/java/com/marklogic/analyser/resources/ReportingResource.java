@@ -25,6 +25,9 @@ public class ReportingResource extends BaseResource {
     private static final Logger LOG = LoggerFactory.getLogger(ReportingResource.class);
     private static Map<String, Integer> aggregateValues = new HashMap<String, Integer>();
 
+    // map.put("title", "Dashboard and Overview");
+
+
     private static Map<String, Integer> sortMapByIntegerSize(Map<String, Integer> map, final boolean order) {
         List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(map.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
