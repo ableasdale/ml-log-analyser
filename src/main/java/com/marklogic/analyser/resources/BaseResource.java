@@ -29,6 +29,7 @@ public class BaseResource {
     public List<File> files = new ArrayList<File>();
 
     public BaseResource() {
+        // TODO - this should detect WHETHER ML is installed and if not, do no further analysis - just open the app with no data!
         //ResourceConfig rc = ServletContainer.getConfiguration();
         // is this a first run?
         if (ErrorLogMap.getInstance().size() == 0 && ConfigParams.getInstance().isFirstRun()) {

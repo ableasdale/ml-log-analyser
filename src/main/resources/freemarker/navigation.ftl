@@ -8,7 +8,16 @@
         <li class="active"><#else>
         <li></#if><a href="/upload">Upload ErrorLog(s)</a></li>
 
-        <li><a href="/report">Aggregate Report</a></li>
+    <#if errorlogs??>
+        <#if errorlogs?size gt 0>
+            <li><a href="/report">Aggregate Report</a></li>
+
+            <#if title = "Events by Date">
+            <li class="active"><#else>
+            <li></#if><a href="/date">Date</a></li>
+        </#if>
+    </#if>
+
 
         <#if term??>
         <#if title = "Search">

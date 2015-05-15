@@ -13,10 +13,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.ConcurrentNavigableMap;
 
 /**
@@ -49,6 +48,30 @@ public class FileProcessManager {
         LOG.info(MessageFormat.format("Completed processing ErrorLog file: {0}", file.getName()));
     }
 
+    // What kind of file is it? Is this an ML ErrorLog file?  Is it a support dump or is it a kernel messages file?
+                /* if messages
+                Apr  8 21:15:04
+                if ErrorLog:
+                2015-05-08 08:48:31.694
+                */
+    private String matchDateRepresentation(String line) {
+        LOG.info("Attempting to parse: "+line);
+        // is this an ErrorLog?
+        SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date t = new Date();
+        try {
+            t = ft.parse(line);
+            LOG.info("We have a date formatted for a MarkLogic ErrorLog: "+t.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();  //To change sbody of catch statement use File | Settings | File Templates.
+        }
+
+        //if(line.startsWith)
+
+
+        return "none";
+    }
+
     private void processErrorLog(ErrorLog el) {
 
         Map<String, List<String>> keywordOccurrences = new HashMap<String, List<String>>();
@@ -58,12 +81,18 @@ public class FileProcessManager {
         List<String> restarts = new ArrayList<String>();
         List<String> lines = el.getErrorLogTxt();
 
+        String mode = matchDateRepresentation(lines.get(0));
+
         for (String l : lines) {
             // Ignore some verbose level logging:
             if (l.contains("Fine: ") || l.contains("Finer: ") || l.contains("Finest: ")) {
                 // || l.contains("Debug: " ?
                 // Nothing to list here: do no further checking
             } else {
+
+
+
+
                 if (l.contains("Starting MarkLogic")) {
                     totalRestarts += 1;
                     int start = lines.indexOf(l);
@@ -93,7 +122,8 @@ public class FileProcessManager {
                     String evtType = temp.substring(0, temp.indexOf(']'));
                     LOG.debug(MessageFormat.format("Trace Event Found: {0}", evtType));
                     checkAndAddItem(traceEvents, evtType, l);
-                } else if (l.contains("Warning: ") || l.contains("Notice: ") || l.contains("Critical: ")) {
+                } else if (l.contains("Warning: ") || l.contains("Critical: ")) {
+                    // Removed these as exceptions and restarts are already tracked anyway || l.contains("Notice: ")
                     String msgType = l.split(" ")[2];
                     msgType = msgType.substring(0, msgType.length() - 1);
                     LOG.debug(MessageFormat.format("Important {0} level ErrorLog message found", msgType));
