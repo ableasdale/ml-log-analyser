@@ -10,10 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.text.MessageFormat;
 import java.util.HashMap;
-
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
@@ -33,20 +32,20 @@ public class RootResource extends BaseResource {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("title", "Dashboard and Overview");
 
-        if(ErrorLogMap.getInstance().size() > 0){
-            LOG.info("ErrorLog contains " + ErrorLogMap.getInstance().size() + " items");
+        if (ErrorLogMap.getInstance().size() > 0) {
+            LOG.debug(MessageFormat.format("ErrorLog contains {0} items", ErrorLogMap.getInstance().size()));
             if (ErrorLogMap.getInstance().containsKey(id)) {
-                LOG.info("Key is " + id + " contains key? " + ErrorLogMap.getInstance().containsKey(id)) ;
+                LOG.debug(MessageFormat.format("Key is {0} contains key? {1}", id, ErrorLogMap.getInstance().containsKey(id)));
                 map.put("errorlog", ErrorLogMap.getInstance().get(id));
             } else {
-                LOG.info("Putting first item from map in.. ");
+                LOG.debug("Putting first item from map in.. ");
                 ConcurrentNavigableMap m = ErrorLogMap.getInstance();
                 String s = ErrorLogMap.getInstance().firstKey();
                 map.put("errorlog", ErrorLogMap.getInstance().get(s));
             }
 
         } else {
-            LOG.info("Dashboard - no ErrorLog to display - size is: " + ErrorLogMap.getInstance().size());
+            LOG.debug(MessageFormat.format("Dashboard - no ErrorLog to display - size is: {0}", ErrorLogMap.getInstance().size()));
         }
 
 
@@ -80,7 +79,7 @@ public class RootResource extends BaseResource {
     @Path("/clear")
     @Produces(MediaType.TEXT_HTML)
     public Viewable clearAndGetDashboard() {
-        LOG.info("Clearing...");
+        LOG.debug("Clearing ErrorLog...");
         ErrorLogMap.setInstance(new ConcurrentSkipListMap<String, ErrorLog>());
         // renders the URI using "src/main/resources/freemarker/dashboard.ftl"
         return new Viewable("/dashboard", createModel("ErrorLog.txt"));

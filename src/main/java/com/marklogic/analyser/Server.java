@@ -13,18 +13,13 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.net.URI;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
-/*import com.xmlmachines.pstack.resources.com.marklogic.analyser.resources.BaseResource;
-import com.xmlmachines.pstack.resources.PropertiesMap;
-import com.xmlmachines.pstack.util.com.marklogic.analyser.util.Consts;*/
 
 public class Server {
 
     private static final Logger LOG = LoggerFactory.getLogger(Server.class);
-
-    //private static String path;
-
     public static final URI BASE_URI = getBaseURI();
 
     private static URI getBaseURI() {
@@ -38,34 +33,41 @@ public class Server {
      * @param args does not matter.
      * @throws IOException in case the application could not be started.
      */
-    public static void main(String[] args) throws IOException {
-
-        // PropertiesMap.getInstance().put("path", args[0]);
-        // HTTP server invocation code below
-        HttpServer httpServer = startServer();
-        LOG.info("HTTP Application com.marklogic.analyser.Server Ready: " + BASE_URI);
-        LOG.info("WADL Definition available at: " + BASE_URI
-                + "/application.wadl");
-        LOG.info("Press enter to stop the application server...");
-        System.in.read();
-        httpServer.stop();
+    public static void main(String[] args) throws Exception {
+        new Server().startServer();
     }
 
-
-    protected static HttpServer startServer() throws IOException {
+    public static void startServer() throws IOException {
         LOG.info("Starting Grizzly (HTTP Service).");
-        ResourceConfig rc = new PackagesResourceConfig(BaseResource.class
-                .getPackage().getName());
+        ResourceConfig rc = new PackagesResourceConfig(BaseResource.class.getPackage().getName());
         rc.getProperties().put(
                 FreemarkerViewProcessor.FREEMARKER_TEMPLATES_BASE_PATH,
                 "freemarker");
         rc.getFeatures().put(ResourceConfig.FEATURE_IMPLICIT_VIEWABLES, true);
-        // TODO - not sure if both template base paths need to be "put" but this
-        // works for now :)
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("com.sun.jersey.freemarker.templateBasePath",
-                Consts.FREEMARKER_TEMPLATE_PATH);
+        params.put("com.sun.jersey.freemarker.templateBasePath", Consts.FREEMARKER_TEMPLATE_PATH);
         rc.setPropertiesAndFeatures(params);
-        return GrizzlyServerFactory.createHttpServer(BASE_URI, rc);
+
+        final HttpServer server = GrizzlyServerFactory.createHttpServer(BASE_URI, rc);
+
+        // register shutdown hook
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            @Override
+            public void run() {
+                LOG.info("Stopping server..");
+                server.stop();
+            }
+        }, "shutdownHook"));
+
+        try {
+            server.start();
+            LOG.info(String.format("HTTP Application com.marklogic.analyser.Server Ready: %s", BASE_URI));
+            LOG.info(MessageFormat.format("WADL Definition available at: {0}/application.wadl", BASE_URI));
+            LOG.info("Press CTRL^C to exit..");
+            Thread.currentThread().join();
+        } catch (Exception e) {
+            LOG.error(
+                    "There was an error while starting Grizzly HTTP server.", e);
+        }
     }
 }
