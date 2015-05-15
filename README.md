@@ -18,7 +18,11 @@ The application will summarise restarts, all known exceptions thrown, trace even
 3. Run: `mvn clean install`
 4. Run: `mvn exec:java -Dexec.mainClass="com.marklogic.analyser.Server"`
 
-Then go to http://localhost:9997
+Then go to [http://localhost:9997](http://localhost:9997)
+
+### To run "permanently" as a background task on a given host
+
+1. Run: nohup mvn exec:java -Dexec.mainClass="com.marklogic.analyser.Server" &
 
 ### Configuration
 

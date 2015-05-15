@@ -27,7 +27,6 @@ public class ReportingResource extends BaseResource {
 
     // map.put("title", "Dashboard and Overview");
 
-
     private static Map<String, Integer> sortMapByIntegerSize(Map<String, Integer> map, final boolean order) {
         List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(map.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
@@ -50,6 +49,7 @@ public class ReportingResource extends BaseResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getDashboard() {
+        aggregateValues.clear();
         StringBuilder sb = new StringBuilder();
         for (String s : ErrorLogMap.getInstance().keySet()) {
             LOG.debug("Creating Report for..." + s);
