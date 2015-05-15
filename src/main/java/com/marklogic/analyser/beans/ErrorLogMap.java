@@ -1,9 +1,7 @@
 package com.marklogic.analyser.beans;
 
-import com.marklogic.analyser.beans.ErrorLog;
-
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentNavigableMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * TODO - Describe
@@ -15,14 +13,14 @@ import java.util.Map;
 public class ErrorLogMap {
 
     private static class LazyHolder {
-        private static Map<String, ErrorLog> INSTANCE = new HashMap<String, ErrorLog>();
+        private static ConcurrentNavigableMap<String, ErrorLog> INSTANCE = new ConcurrentSkipListMap<String, ErrorLog>();
     }
 
-    public static Map<String, ErrorLog> getInstance() {
+    public static ConcurrentNavigableMap<String, ErrorLog> getInstance() {
         return LazyHolder.INSTANCE;
     }
 
-    public static void setInstance(Map<String, ErrorLog> map) {
+    public static void setInstance(ConcurrentNavigableMap<String, ErrorLog> map) {
         LazyHolder.INSTANCE = map;
     }
 

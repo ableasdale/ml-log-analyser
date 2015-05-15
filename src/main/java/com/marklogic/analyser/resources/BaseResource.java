@@ -1,6 +1,7 @@
 package com.marklogic.analyser.resources;
 
 import com.marklogic.analyser.FileProcessManager;
+import com.marklogic.analyser.beans.ConfigParams;
 import com.marklogic.analyser.beans.ErrorLogMap;
 import com.marklogic.analyser.util.Consts;
 import com.marklogic.analyser.util.Os;
@@ -11,20 +12,12 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.text.MessageFormat;
 import java.util.*;
 
 import static java.text.MessageFormat.format;
-
-//import com.xmlmachines.pstack.beans.SearchResults;
-/*import com.xmlmachines.pstack.beans.PStackFrame;
-import com.xmlmachines.pstack.beans.Thread;
-import com.xmlmachines.pstack.util.Utils;
- */
 
 /**
  * Created with IntelliJ IDEA. User: ableasdale Date: 2/1/14 Time: 6:10 PM
@@ -34,23 +27,24 @@ public class BaseResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseResource.class);
 
-    @Context
-    protected UriInfo uriInfo;
-
     public List<File> files = new ArrayList<File>();
 
     public BaseResource() {
+        //ResourceConfig rc = ServletContainer.getConfiguration();
         // is this a first run?
-        if (ErrorLogMap.getInstance().size() == 0) {
+        if (ErrorLogMap.getInstance().size() == 0 && ConfigParams.getInstance().isFirstRun()) {
             LOG.info(MessageFormat.format("Base Resource :: Constructor - First Run :: OS detected: {0}", Consts.HOST_OS));
             if (Os.isWindows()) {
                 analysePath(Consts.DIRECTORY_PATH_WINDOWS);
             } else if (Os.isLinux()) {
                 analysePath(Consts.DIRECTORY_PATH_LINUX);
-            } else if (Os.isMac()){
+            } else if (Os.isMac()) {
                 analysePath(Consts.DIRECTORY_PATH_OSX);
             }
             // TODO - Add Solaris support one day?
+            ConfigParams cp = ConfigParams.getInstance();
+            cp.setFirstRun(false);
+            ConfigParams.setInstance(cp);
         }
     }
 
@@ -111,21 +105,6 @@ public class BaseResource {
         return r;
     }
 
-    /**
-     * Trims the String output by pstack to include only the important
-     * information
-     *
-     * @param str
-     * @return
-     */
-    private String getThreadInfo(String str) {
-        return str.substring((str.indexOf("(") + 1), str.lastIndexOf(")"));
-    }
-
-    public URI getUri(Class c) {
-        return uriInfo.getBaseUriBuilder().path(c).build();
-    }
-
 
     /**
      * General handler for exceptions in the request made to the resource This
@@ -157,7 +136,7 @@ public class BaseResource {
 
 
     protected void analysePath(String path) {
-        LOG.info("Working with file path: "+path);
+        LOG.info("Working with file path: " + path);
         // This should be a singleton!
         FileProcessManager fpm = new FileProcessManager();
         File file = new File(path);

@@ -13,6 +13,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.2.0/codemirror.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.2.0/codemirror.min.css" />
 <script>
+
+    $('#confirm-delete').on('show.bs.modal');
+
     // expanders
     $(document).on('click', '.panel-heading span.clickable', function(e){
         var $this = $(this);
@@ -122,6 +125,7 @@
 
     .even-spaced {  margin-top: 2em; margin-bottom: 2em; }
     .bottom-spaced { margin-bottom:4em; }
+    .spacer-right {margin-right:1em;}
 
     /* Sticky footer styles
     -------------------------------------------------- */

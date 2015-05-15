@@ -23,7 +23,7 @@ public class Server {
 
     private static final Logger LOG = LoggerFactory.getLogger(Server.class);
 
-    private static String path;
+    //private static String path;
 
     public static final URI BASE_URI = getBaseURI();
 
@@ -59,7 +59,6 @@ public class Server {
         rc.getProperties().put(
                 FreemarkerViewProcessor.FREEMARKER_TEMPLATES_BASE_PATH,
                 "freemarker");
-        //rc.getProperties().put(com.marklogic.analyser.util.Consts.SOURCE_FILE_TO_PROCESS, path);
         rc.getFeatures().put(ResourceConfig.FEATURE_IMPLICIT_VIEWABLES, true);
         // TODO - not sure if both template base paths need to be "put" but this
         // works for now :)

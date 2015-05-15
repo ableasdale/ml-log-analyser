@@ -1,6 +1,8 @@
 ## MarkLogic ErrorLog Analyser - v0.2
 
-Allows a MarkLogic team to monitor and summarise multiple ErrorLog files to aid in the analysis of a large number of events (over multiple nodes) very quickly.  The application will summarise restarts, all known exceptions thrown, trace events and Warning and Critical level error messages.
+Allows a MarkLogic team to monitor and summarise multiple ErrorLog files to aid in the analysis of a large number of events (over multiple nodes) very quickly.  
+
+The application will summarise restarts, all known exceptions thrown, trace events and Warning and Critical level error messages.
 
 * Allows search across multiple log files for key terms
 * Supports individual ErrorLog files as large as 4GB in size
@@ -11,8 +13,10 @@ Allows a MarkLogic team to monitor and summarise multiple ErrorLog files to aid 
 
 ### To build and run
 
-1. `mvn clean install`
-2. `mvn exec:java -Dexec.mainClass="com.marklogic.analyser.Server"`
+1. Ensure Apache Maven is installed and configured on your host [https://maven.apache.org/](https://maven.apache.org/)
+2. cd to the root of the directory
+3. Run: `mvn clean install`
+4. Run: `mvn exec:java -Dexec.mainClass="com.marklogic.analyser.Server"`
 
 Then go to http://localhost:9997
 

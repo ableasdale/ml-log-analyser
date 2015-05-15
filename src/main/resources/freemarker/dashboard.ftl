@@ -8,10 +8,14 @@
     <div class="row">
         <h2>MarkLogic ErrorLog Analyser <small>Dashboard</small></h2>
         <#include "navigation.ftl">
-        <h3>Current file: <small>${errorlog.getName()} (${errorlog.getErrorLogTxt()?size} line(s))</small></h3>
+        <#if errorlog??><h3>Current file: <small>${errorlog.getName()} (${errorlog.getErrorLogTxt()?size} line(s))</small></h3>
+        <#else>
+        <h3>No ErrorLog / Messages files are available <small>Use the upload form to start</small></h3>
+        </#if>
+
     </div>
 
-
+<#if errorlog??>
     <div class="row">
         <h3>Summary of occurrences:</h3>
         <dl class="dl-horizontal">
@@ -114,7 +118,7 @@
         </textarea>
         </div>
     </div>
-
+</#if>
 
 
 </div>

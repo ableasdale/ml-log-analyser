@@ -64,7 +64,7 @@ public class ReportingResource extends BaseResource {
         sb.append("Aggregate report for all ErrorLog files\n");
         sb.append("------------\n");
         for (String t : sortMapByIntegerSize(aggregateValues, false).keySet()) {
-            sb.append(formattedLine(t,Integer.toString(aggregateValues.get(t))));
+            sb.append(formattedLine(t, Integer.toString(aggregateValues.get(t))));
         }
         return sb.toString();
     }
@@ -82,12 +82,12 @@ public class ReportingResource extends BaseResource {
     private StringBuilder appendStringBuilderWithMapItems(StringBuilder sb, Map<String, List<String>> map) {
         SortedSet<String> keys = new TreeSet<String>(map.keySet());
         for (String t : keys) {
-            sb.append(formattedLine(t,Integer.toString(map.get(t).size())));
+            sb.append(formattedLine(t, Integer.toString(map.get(t).size())));
         }
         return sb;
     }
 
-    private String formattedLine(String key, String value){
+    private String formattedLine(String key, String value) {
         return String.format(Consts.FORMAT, key, value);
     }
 

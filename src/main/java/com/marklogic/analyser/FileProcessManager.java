@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentNavigableMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -112,7 +113,10 @@ public class FileProcessManager {
         el.setTotalRestarts(totalRestarts);
         el.setOccurrenceMap(keywordOccurrences);
         el.setTraceEventMessages(traceEvents);
-        ErrorLogMap.getInstance().put(el.getName(), el);
+        ConcurrentNavigableMap<String, ErrorLog> elm = ErrorLogMap.getInstance();
+        elm.put(el.getName(), el);
+        ErrorLogMap.setInstance(elm);
+        // .getInstance().put(el.getName(), el);
 
        /* for (String s : el.getOccurrenceMap().keySet())
             LOG.info(MessageFormat.format("Total number of {0} messages reported: {1}", s, String.valueOf(keywordOccurrences.get(s))));   */

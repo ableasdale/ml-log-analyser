@@ -58,17 +58,17 @@ public class SearchResource extends BaseResource {
         return new Viewable("/search", createModel(searchTerm));
     }
 
-    private void doSearch(String searchTerm){
+    private void doSearch(String searchTerm) {
         logs = new HashMap<String, List<String>>();
 
-        for (String s : ErrorLogMap.getInstance().keySet()){
+        for (String s : ErrorLogMap.getInstance().keySet()) {
             ErrorLog el = ErrorLogMap.getInstance().get(s);
 
             List<String> logTxt = el.getErrorLogTxt();
             List<String> searchResults = new ArrayList<String>();
 
-            for (String t : logTxt){
-                if(t.contains(searchTerm)){
+            for (String t : logTxt) {
+                if (t.contains(searchTerm)) {
                     searchResults.add(t);
                 }
             }

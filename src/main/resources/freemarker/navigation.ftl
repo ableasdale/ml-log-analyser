@@ -28,6 +28,8 @@
         </div>
     </form>
 
+<#if errorlogs??>
+<#if errorlogs?size gt 0>
     <div class="btn-group pull-right">
         <button type="button" class="btn btn-primary navbar-btn">Select ErrorLog</button>
         <button type="button" class="btn btn-primary dropdown-toggle navbar-btn" data-toggle="dropdown" aria-expanded="false">
@@ -35,13 +37,35 @@
             <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu" role="menu">
-        <#if errorlogs??>
             <#assign elkeys = errorlogs?keys>
             <#list elkeys as elkey>
                 <li><a href="/view/${elkey}">${elkey}</a></li>
             </#list>
-        </#if>
         </ul>
     </div>
+    <div class="btn-group pull-right spacer-right">
+            <button type="button" class="btn btn-danger navbar-btn" data-href="/clear" data-toggle="modal" data-target="#confirm-delete">Clear</button>
+    </div>
+</#if>
+</#if>
+</div>
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+            </div>
+
+            <div class="modal-body">
+                <p>This will clear all currently parsed ErrorLog files</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a href="/clear" class="btn btn-danger btn-ok">Delete</a>
+            </div>
+        </div>
+    </div>
 </div>
