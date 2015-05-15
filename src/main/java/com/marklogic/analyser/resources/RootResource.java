@@ -9,7 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
+import javax.ws.rs.core.SecurityContext;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +27,17 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 @Path("/")
 public class RootResource extends BaseResource {
+
+    //@Context
+    //SecurityContext securityContext;
+
+    //@Context
+    //private ThreadLocal<Request> request;
+
+    //@GET
+    //public String getUserPrincipal() {
+     //   return securityContext.getUserPrincipal().getName();
+    //}
 
     private static final Logger LOG = LoggerFactory.getLogger(RootResource.class);
 
@@ -53,16 +67,18 @@ public class RootResource extends BaseResource {
         map.put("lines", Consts.MAX_LINES_FOR_LOG_PREVIEW);
         return map;
     }
-
+                            //@Context SecurityContext sc
     @POST
     @Produces(MediaType.TEXT_HTML)
     public Viewable doPost() {
         return getDashboard();
     }
-
+                                 //@Context SecurityContext sc
     @GET
     @Produces(MediaType.TEXT_HTML)
     public Viewable getDashboard() {
+
+        //LOG.info("Is Secure: " + sc.isSecure());
         // renders the URI using "src/main/resources/freemarker/dashboard.ftl"
         return new Viewable("/dashboard", createModel("ErrorLog.txt"));
     }

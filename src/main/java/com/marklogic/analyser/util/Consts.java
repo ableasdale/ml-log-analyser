@@ -21,4 +21,7 @@ public class Consts {
     public static String HOST_OS = System.getProperty("os.name").toLowerCase();
     public static int MAX_LINES_FOR_LOG_PREVIEW = 15000;
     public static String FORMAT = "%-25s%s%n";
+
+    public static String DATE_FMT_LINUX_MESSAGES = "MMM d HH:mm:ss";
+    public static String DATE_FMT_ML_ERRORLOG = "yyyy-MM-dd HH:mm:ss";
 }

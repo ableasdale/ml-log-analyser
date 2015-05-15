@@ -48,7 +48,8 @@
         $(function () {
             // "myAwesomeDropzone" is the camelized version of the HTML element's ID
             Dropzone.options.dropzone = {
-                maxFilesize: 4096 // MB
+                maxFilesize: 4096, // MB
+                parallelUploads: 16
             };
             $("dropzone").dropzone({ url: "/upload", maxFilesize: 4 });
         });

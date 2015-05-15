@@ -55,21 +55,37 @@ public class FileProcessManager {
                 2015-05-08 08:48:31.694
                 */
     private String matchDateRepresentation(String line) {
+        if(line.contains("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")){
+            LOG.info("File is a support dump");
+            return("SUPPORT_DUMP");
+        }
+
+
         LOG.info("Attempting to parse: "+line);
         // is this an ErrorLog?
-        SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat ft = new SimpleDateFormat(Consts.DATE_FMT_ML_ERRORLOG);
         Date t = new Date();
         try {
             t = ft.parse(line);
             LOG.info("We have a date formatted for a MarkLogic ErrorLog: "+t.toString());
+            return("ERROR_LOG");
         } catch (ParseException e) {
-            e.printStackTrace();  //To change sbody of catch statement use File | Settings | File Templates.
+            LOG.info("Unable to parse file as ErrorLog.txt " + e.getMessage());
         }
 
-        //if(line.startsWith)
+        // Is it a Linux kernel messages file?
+        SimpleDateFormat ft2 = new SimpleDateFormat(Consts.DATE_FMT_LINUX_MESSAGES);
+        Date t2 = new Date();
+        try {
+            t2 = ft2.parse(line);
+            LOG.info("We have a date formatted for a Linux Messages file: "+t.toString());
+            return("MESSAGES");
+        } catch (ParseException e) {
+            LOG.info("Unable to parse file as /var/log/messages " + e.getMessage());
+        }
 
-
-        return "none";
+        // No idea ....
+        return "UNIDENTIFIED";
     }
 
     private void processErrorLog(ErrorLog el) {

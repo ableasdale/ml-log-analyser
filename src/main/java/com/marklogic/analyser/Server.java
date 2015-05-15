@@ -2,10 +2,17 @@ package com.marklogic.analyser;
 
 import com.marklogic.analyser.resources.BaseResource;
 import com.marklogic.analyser.util.Consts;
+import com.sun.jersey.api.container.filter.LoggingFilter;
 import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.api.core.ResourceConfig;
 import com.sun.jersey.freemarker.FreemarkerViewProcessor;
+import com.sun.jersey.spi.container.servlet.ServletContainer;
+import org.glassfish.grizzly.servlet.ServletRegistration;
+import org.glassfish.grizzly.servlet.WebappContext;
+/*import org.glassfish.grizzly.ssl.SSLContextConfigurator;
+import org.glassfish.grizzly.ssl.SSLEngineConfigurator;*/
+
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,16 +46,34 @@ public class Server {
 
     public static void startServer() throws IOException {
         LOG.info("Starting Grizzly (HTTP Service).");
-        ResourceConfig rc = new PackagesResourceConfig(BaseResource.class.getPackage().getName());
-        rc.getProperties().put(
-                FreemarkerViewProcessor.FREEMARKER_TEMPLATES_BASE_PATH,
+
+        WebappContext context = new WebappContext("context");
+        ServletRegistration registration =
+                context.addServlet("ServletContainer", ServletContainer.class);
+        registration.setInitParameter("com.sun.jersey.config.property.packages",
+                "com.marklogic.analyser.resources;com.marklogic.analyser.auth");
+        registration.addMapping("/*");
+
+        // add security filter (which handles http basic authentication)
+        registration.setInitParameter(ResourceConfig.PROPERTY_CONTAINER_REQUEST_FILTERS,
+                "com.marklogic.analyser.auth.SecurityFilter;com.sun.jersey.api.container.filter.LoggingFilter");
+        registration.setInitParameter(ResourceConfig.PROPERTY_CONTAINER_RESPONSE_FILTERS,
+                LoggingFilter.class.getName());
+
+        // add freemarker init mapping
+        registration.setInitParameter(FreemarkerViewProcessor.FREEMARKER_TEMPLATES_BASE_PATH,
                 "freemarker");
+        //registration.setInitParameter(ResourceConfig.FEATURE_IMPLICIT_VIEWABLES, true);
+
+        ResourceConfig rc = new PackagesResourceConfig(BaseResource.class.getPackage().getName());
         rc.getFeatures().put(ResourceConfig.FEATURE_IMPLICIT_VIEWABLES, true);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("com.sun.jersey.freemarker.templateBasePath", Consts.FREEMARKER_TEMPLATE_PATH);
         rc.setPropertiesAndFeatures(params);
 
-        final HttpServer server = GrizzlyServerFactory.createHttpServer(BASE_URI, rc);
+
+        final HttpServer server = GrizzlyServerFactory.createHttpServer(BASE_URI);
+        context.deploy(server);
 
         // register shutdown hook
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
@@ -71,3 +96,25 @@ public class Server {
         }
     }
 }
+
+/*
+
+
+
+
+    try {
+
+        webServer = GrizzlyServerFactory.createHttpServer(
+                getBaseURI()
+        );
+
+        // start Grizzly embedded server //
+        System.out.println("Jersey app started. Try out " + BASE_URI + "\nHit CTRL + C to stop it...");
+        context.deploy(webServer);
+        webServer.start();
+
+    } catch (Exception ex) {
+        System.out.println(ex.getMessage());
+    }
+
+   */
