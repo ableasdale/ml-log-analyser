@@ -1,9 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.marklogic.analyser.auth;
 
+import com.marklogic.analyser.util.Consts;
 import com.sun.jersey.api.container.MappableContainerException;
 import com.sun.jersey.core.util.Base64;
 import com.sun.jersey.spi.container.ContainerRequest;
@@ -15,14 +12,13 @@ import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 
 /**
- *
- * Simpler version of Security filter from Atom example
+ * Stub security (authentication) holder - added here for illustrative purposes only.
  */
-public class SecurityFilter implements ContainerRequestFilter {
+public class SimpleSecurityFilter implements ContainerRequestFilter {
 
     @Context
     UriInfo uriInfo;
-    private static final String REALM = "HTTPS Example authentization";
+    private static final String REALM = "HTTP Authentication";
 
     public ContainerRequest filter(ContainerRequest request) {
         User user = authenticate(request);
@@ -58,7 +54,7 @@ public class SecurityFilter implements ContainerRequestFilter {
         // Validate the extracted credentials
         User user = null;
 
-        if (username.equals("user") && password.equals("password")) {
+        if (username.equals(Consts.STUB_SECURITY_USER) && password.equals(Consts.STUB_SECURITY_PASS)) {
             user = new User("user", "user");
             System.out.println("USER AUTHENTICATED");
         //        } else if (username.equals("admin") && password.equals("adminadmin")) {

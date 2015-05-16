@@ -1,10 +1,9 @@
 package com.marklogic.analyser;
 
-import com.marklogic.analyser.resources.BaseResource;
 import com.marklogic.analyser.util.Consts;
 import com.sun.jersey.api.container.filter.LoggingFilter;
-import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
-import com.sun.jersey.api.core.PackagesResourceConfig;
+
+import org.glassfish.jersey.grizzly2.servlet.GrizzlyWebContainerFactory;
 import com.sun.jersey.api.core.ResourceConfig;
 import com.sun.jersey.freemarker.FreemarkerViewProcessor;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
@@ -20,9 +19,6 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.net.URI;
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Server {
 
@@ -31,7 +27,7 @@ public class Server {
 
     private static URI getBaseURI() {
         return UriBuilder.fromUri("http://0.0.0.0")
-                .port(Consts.GRIZZLY_HTTP_PORT).build();
+                .port(Consts.GRIZZLY_HTTP_PORT).path("/").build();
     }
 
     /**
@@ -45,76 +41,47 @@ public class Server {
     }
 
     public static void startServer() throws IOException {
-        LOG.info("Starting Grizzly (HTTP Service).");
+        LOG.info("Starting Grizzly Web Container.");
 
         WebappContext context = new WebappContext("context");
         ServletRegistration registration =
                 context.addServlet("ServletContainer", ServletContainer.class);
-        registration.setInitParameter("com.sun.jersey.config.property.packages",
-                "com.marklogic.analyser.resources;com.marklogic.analyser.auth");
+        registration.setInitParameter("com.sun.jersey.config.property.packages", Server.class.getPackage().getName());
         registration.addMapping("/*");
 
-        // add security filter (which handles http basic authentication)
+        // Add Security Request filter layer (to handle http authentication) - implemented in SimpleSecurityFilter and intended for demonstration only!
         registration.setInitParameter(ResourceConfig.PROPERTY_CONTAINER_REQUEST_FILTERS,
-                "com.marklogic.analyser.auth.SecurityFilter;com.sun.jersey.api.container.filter.LoggingFilter");
+                "com.marklogic.analyser.auth.SimpleSecurityFilter;com.sun.jersey.api.container.filter.LoggingFilter");
+
+        // Add logging Response filter (for debugging)
         registration.setInitParameter(ResourceConfig.PROPERTY_CONTAINER_RESPONSE_FILTERS,
                 LoggingFilter.class.getName());
 
-        // add freemarker init mapping
+        // Add Freemarker template mapping
         registration.setInitParameter(FreemarkerViewProcessor.FREEMARKER_TEMPLATES_BASE_PATH,
                 "freemarker");
-        //registration.setInitParameter(ResourceConfig.FEATURE_IMPLICIT_VIEWABLES, true);
 
-        ResourceConfig rc = new PackagesResourceConfig(BaseResource.class.getPackage().getName());
-        rc.getFeatures().put(ResourceConfig.FEATURE_IMPLICIT_VIEWABLES, true);
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("com.sun.jersey.freemarker.templateBasePath", Consts.FREEMARKER_TEMPLATE_PATH);
-        rc.setPropertiesAndFeatures(params);
+        // Create the container
+        final HttpServer server = GrizzlyWebContainerFactory.create(BASE_URI);
 
-
-        final HttpServer server = GrizzlyServerFactory.createHttpServer(BASE_URI);
+        // Deploy the application into the container
         context.deploy(server);
 
-        // register shutdown hook
+        // Register shutdown hook for container
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             @Override
             public void run() {
                 LOG.info("Stopping server..");
-                server.stop();
+                server.shutdownNow();
             }
         }, "shutdownHook"));
 
         try {
             server.start();
-            LOG.info(String.format("HTTP Application com.marklogic.analyser.Server Ready: %s", BASE_URI));
-            LOG.info(MessageFormat.format("WADL Definition available at: {0}/application.wadl", BASE_URI));
-            LOG.info("Press CTRL^C to exit..");
+            LOG.info("Server Ready... Press CTRL^C to exit..");
             Thread.currentThread().join();
         } catch (Exception e) {
-            LOG.error(
-                    "There was an error while starting Grizzly HTTP server.", e);
+            LOG.error("Exception starting HTTP server: ", e);
         }
     }
 }
-
-/*
-
-
-
-
-    try {
-
-        webServer = GrizzlyServerFactory.createHttpServer(
-                getBaseURI()
-        );
-
-        // start Grizzly embedded server //
-        System.out.println("Jersey app started. Try out " + BASE_URI + "\nHit CTRL + C to stop it...");
-        context.deploy(webServer);
-        webServer.start();
-
-    } catch (Exception ex) {
-        System.out.println(ex.getMessage());
-    }
-
-   */

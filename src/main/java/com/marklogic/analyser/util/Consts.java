@@ -17,11 +17,13 @@ public class Consts {
     public static String DIRECTORY_PATH_OSX = "/tmp";
     public static int RESTART_TOTAL_LINES = 10;
     public static int GRIZZLY_HTTP_PORT = 9997;
-    public static String FREEMARKER_TEMPLATE_PATH = "src/main/resources/freemarker";
     public static String HOST_OS = System.getProperty("os.name").toLowerCase();
     public static int MAX_LINES_FOR_LOG_PREVIEW = 15000;
     public static String FORMAT = "%-25s%s%n";
 
     public static String DATE_FMT_LINUX_MESSAGES = "MMM d HH:mm:ss";
     public static String DATE_FMT_ML_ERRORLOG = "yyyy-MM-dd HH:mm:ss";
+
+    public static String STUB_SECURITY_USER = "user";
+    public static String STUB_SECURITY_PASS = "password";
 }
