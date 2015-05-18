@@ -49,6 +49,7 @@ public class Server {
         registration.setInitParameter("com.sun.jersey.config.property.packages", Server.class.getPackage().getName());
         registration.addMapping("/*");
 
+        /*
         // Add Security Request filter layer (to handle http authentication) - implemented in SimpleSecurityFilter and intended for demonstration only!
         registration.setInitParameter(ResourceConfig.PROPERTY_CONTAINER_REQUEST_FILTERS,
                 "com.marklogic.analyser.auth.SimpleSecurityFilter;com.sun.jersey.api.container.filter.LoggingFilter");
@@ -56,6 +57,7 @@ public class Server {
         // Add logging Response filter (for debugging)
         registration.setInitParameter(ResourceConfig.PROPERTY_CONTAINER_RESPONSE_FILTERS,
                 LoggingFilter.class.getName());
+        */
 
         // Add Freemarker template mapping
         registration.setInitParameter(FreemarkerViewProcessor.FREEMARKER_TEMPLATES_BASE_PATH,
