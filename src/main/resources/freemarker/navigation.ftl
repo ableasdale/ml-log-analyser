@@ -12,9 +12,11 @@
         <#if errorlogs?size gt 0>
             <li><a href="/report">Aggregate Report</a></li>
 
+        <!-- TODO: Not fully implemented - removing from view for now
             <#if title = "Events by Date">
             <li class="active"><#else>
             <li></#if><a href="/date">Date</a></li>
+            -->
         </#if>
     </#if>
 
