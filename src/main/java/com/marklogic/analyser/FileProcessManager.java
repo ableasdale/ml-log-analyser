@@ -98,7 +98,7 @@ public class FileProcessManager {
         List<String> lines = el.getErrorLogTxt();
         List<String> fragmentMessages = new ArrayList<String>();
 
-        String mode = matchDateRepresentation(lines.get(0));
+        //String mode = matchDateRepresentation(lines.get(0));
 
         for (String l : lines) {
             // Ignore some verbose level logging:
@@ -109,7 +109,7 @@ public class FileProcessManager {
                 if (l.contains("MarkLogic: Forest") && l.contains("has") && l.contains("fragments.")) {
                     int start = lines.indexOf(l);
                     int idx;
-                    LOG.info(MessageFormat.format("Messages :: \"Forest has XXXXX fragments\" message found at : {0}", String.valueOf(start)));
+                    LOG.debug(MessageFormat.format("Messages :: \"Forest has XXXXX fragments\" message found at : {0}", String.valueOf(start)));
                     if (start >= 5) {
                         idx = start - 4;
                     } else {
