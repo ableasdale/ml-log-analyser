@@ -96,6 +96,7 @@ public class FileProcessManager {
         int totalRestarts = 0;
         List<String> restarts = new ArrayList<String>();
         List<String> lines = el.getErrorLogTxt();
+        List<String> fragmentMessages = new ArrayList<String>();
 
         String mode = matchDateRepresentation(lines.get(0));
 
@@ -105,10 +106,21 @@ public class FileProcessManager {
                 // || l.contains("Debug: " ?
                 // Nothing to list here: do no further checking
             } else {
-
-
-
-
+                if (l.contains("MarkLogic: Forest") && l.contains("has") && l.contains("fragments.")) {
+                    int start = lines.indexOf(l);
+                    int idx;
+                    LOG.info(MessageFormat.format("Messages :: \"Forest has XXXXX fragments\" message found at : {0}", String.valueOf(start)));
+                    if (start >= 5) {
+                        idx = start - 4;
+                    } else {
+                        idx = 0;
+                    }
+                    for (int i = 0; i < Consts.RESTART_TOTAL_LINES; i++) {
+                        fragmentMessages.add(lines.get(idx));
+                        idx++;
+                    }
+                    fragmentMessages.add("------------");
+                }
                 if (l.contains("Starting MarkLogic")) {
                     totalRestarts += 1;
                     int start = lines.indexOf(l);
@@ -158,6 +170,7 @@ public class FileProcessManager {
         el.setOtherMessages(otherMessages);
         el.setTotalRestarts(totalRestarts);
         el.setOccurrenceMap(keywordOccurrences);
+        el.setFragmentMessages(fragmentMessages);
         el.setTraceEventMessages(traceEvents);
         ConcurrentNavigableMap<String, ErrorLog> elm = ErrorLogMap.getInstance();
         elm.put(el.getName(), el);

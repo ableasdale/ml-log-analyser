@@ -18,6 +18,7 @@ public class ErrorLog {
     private int totalRestarts;
     private List<String> errorLogTxt;
     private List<String> errorLogRestartTxt;
+    private List<String> fragmentMessages;
     private Map<String, List<String>> occurrenceMap;
     private Map<String, List<String>> otherMessages;
     private Map<String, List<String>> traceEventMessages;
@@ -60,6 +61,14 @@ public class ErrorLog {
         this.errorLogRestartTxt = errorLogRestartTxt;
     }
 
+    public List<String> getFragmentMessages() {
+        return fragmentMessages;
+    }
+
+    public void setFragmentMessages(List<String> fragmentMessages) {
+        this.fragmentMessages = fragmentMessages;
+    }
+
     public Map<String, List<String>> getOccurrenceMap() {
         return occurrenceMap;
     }
@@ -92,25 +101,31 @@ public class ErrorLog {
         ErrorLog errorLog = (ErrorLog) o;
 
         if (totalRestarts != errorLog.totalRestarts) return false;
-        if (!errorLogRestartTxt.equals(errorLog.errorLogRestartTxt)) return false;
-        if (!errorLogTxt.equals(errorLog.errorLogTxt)) return false;
-        if (!name.equals(errorLog.name)) return false;
-        if (!occurrenceMap.equals(errorLog.occurrenceMap)) return false;
-        if (!otherMessages.equals(errorLog.otherMessages)) return false;
-        if (!traceEventMessages.equals(errorLog.traceEventMessages)) return false;
+        if (name != null ? !name.equals(errorLog.name) : errorLog.name != null) return false;
+        if (errorLogTxt != null ? !errorLogTxt.equals(errorLog.errorLogTxt) : errorLog.errorLogTxt != null)
+            return false;
+        if (errorLogRestartTxt != null ? !errorLogRestartTxt.equals(errorLog.errorLogRestartTxt) : errorLog.errorLogRestartTxt != null)
+            return false;
+        if (fragmentMessages != null ? !fragmentMessages.equals(errorLog.fragmentMessages) : errorLog.fragmentMessages != null)
+            return false;
+        if (occurrenceMap != null ? !occurrenceMap.equals(errorLog.occurrenceMap) : errorLog.occurrenceMap != null)
+            return false;
+        if (otherMessages != null ? !otherMessages.equals(errorLog.otherMessages) : errorLog.otherMessages != null)
+            return false;
+        return !(traceEventMessages != null ? !traceEventMessages.equals(errorLog.traceEventMessages) : errorLog.traceEventMessages != null);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
+        int result = name != null ? name.hashCode() : 0;
         result = 31 * result + totalRestarts;
-        result = 31 * result + errorLogTxt.hashCode();
-        result = 31 * result + errorLogRestartTxt.hashCode();
-        result = 31 * result + occurrenceMap.hashCode();
-        result = 31 * result + otherMessages.hashCode();
-        result = 31 * result + traceEventMessages.hashCode();
+        result = 31 * result + (errorLogTxt != null ? errorLogTxt.hashCode() : 0);
+        result = 31 * result + (errorLogRestartTxt != null ? errorLogRestartTxt.hashCode() : 0);
+        result = 31 * result + (fragmentMessages != null ? fragmentMessages.hashCode() : 0);
+        result = 31 * result + (occurrenceMap != null ? occurrenceMap.hashCode() : 0);
+        result = 31 * result + (otherMessages != null ? otherMessages.hashCode() : 0);
+        result = 31 * result + (traceEventMessages != null ? traceEventMessages.hashCode() : 0);
         return result;
     }
 }

@@ -39,7 +39,6 @@
         </dl>
     </div>
 
-
     <div class="panel panel-danger">
         <div class="panel-heading">
             <strong>Restarts, Audit Events and higher level ErrorLog messages</strong> <small>All <em>Warning</em> and <em>Critical</em> ErrorLog level messages and restarts</small>
@@ -60,6 +59,12 @@
             <div class="form-group">
                 <label for="restart-txt">Log entries surrounding MarkLogic restarts</label>
                 <textarea class="form-control" rows="5" id="restart-txt"><#list errorlog.getErrorLogRestartTxt() as item>${item}
+</#list></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="restart-txt">Log entries surrounding MarkLogic fragment messages</label>
+                <textarea class="form-control" rows="5" id="restart-txt"><#list errorlog.getFragmentMessages() as item>${item}
 </#list></textarea>
             </div>
 
