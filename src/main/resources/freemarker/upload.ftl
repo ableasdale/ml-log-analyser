@@ -11,7 +11,7 @@
     </div>
 
     <div class="panel panel-default">
-        <div class="panel-heading"><strong>Upload Files</strong> <small>Bootstrap files upload</small></div>
+        <div class="panel-heading"><strong>Upload Files</strong> <small>Drag ErrorLog files into box below</small></div>
         <div class="panel-body">
 
             <h4>Select files from your computer</h4>

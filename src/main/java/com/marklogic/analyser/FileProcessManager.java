@@ -102,7 +102,7 @@ public class FileProcessManager {
 
         for (String l : lines) {
             // Ignore some verbose level logging:
-            if (l.contains("Fine: ") || l.contains("Finer: ") || l.contains("Finest: ")) {
+            if (l.contains("Fine: ") || l.contains("Finer: ") || l.contains("Finest: ") || l.contains("Debug: ")  ) {
                 // || l.contains("Debug: " ?
                 // Nothing to list here: do no further checking
             } else {
@@ -140,12 +140,17 @@ public class FileProcessManager {
                     }
                     restarts.add("------------");
                 }
-                // Gather and sort all Audit and trace events found in the ErrorLog
-                if (l.contains("AuditEvent")) {
-                    //LOG.info(l);
+
+                // Find evidence of a stack trace
+                if (l.contains("#") && l.contains(" 0x") && l.contains(" in ")) {// !(l.contains("&#") || l.contains("&amp;#") ) ) {
+                    LOG.debug(String.format("Crash dump found: %s", l));
+                    checkAndAddItem(otherMessages, "Crash", l);
+                } else if (l.contains("AuditEvent")) {
+                    // Gather and sort all Audit and trace events found in the ErrorLog
                     // TODO - may want to break these down further
                     checkAndAddItem(otherMessages, "AuditEvent", l);
                 } else if (l.contains("Event:")) {
+                    LOG.info(String.format("Event: %s", l));
                     String temp = l.split("Event:id=")[1];
                     String evtType = temp.substring(0, temp.indexOf(']'));
                     LOG.debug(MessageFormat.format("Trace Event Found: {0}", evtType));
