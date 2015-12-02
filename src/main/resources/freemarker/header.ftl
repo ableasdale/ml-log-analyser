@@ -48,10 +48,10 @@
 <script>
         $(function () {
             Dropzone.options.dropzone = {
-                maxFilesize: 4096, // MB
+                maxFilesize: 9096, // MB
                 parallelUploads: 16
             };
-            $("dropzone").dropzone({ url: "/upload", maxFilesize: 4 });
+            $("dropzone").dropzone({ url: "/upload", maxFilesize: 9 });
         });
 </script>
 </#if>
