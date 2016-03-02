@@ -1,4 +1,6 @@
-## MarkLogic ErrorLog Analyser - v0.2
+## MarkLogic ErrorLog Analyser - v0.2a
+[![Build Status](https://travis-ci.org/ableasdale/ml-log-analyser.svg?branch=master)](https://travis-ci.org/ableasdale/ml-log-analyser)
+[![Dependency Status](https://www.versioneye.com/user/projects/56d70caad71695003886c31e/badge.svg?style=flat)](https://www.versioneye.com/user/projects/56d70caad71695003886c31e)
 
 Allows a MarkLogic team to monitor and summarise multiple ErrorLog files to aid in the analysis of a large number of events (over multiple nodes) very quickly.  
 
