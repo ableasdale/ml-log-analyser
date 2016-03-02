@@ -13,18 +13,19 @@ The application will summarise restarts, all known exceptions thrown, trace even
 * Generates a report as text and aggregates exception messages across all uploaded ErrorLog files
 * Also reports on and summarises all occurrences of diagnostic trace events also in the ErrorLog
 
-### To build and run
+### To build, test and run:
 
-1. Ensure Apache Maven is installed and configured on your host [https://maven.apache.org/](https://maven.apache.org/)
-2. cd to the root of the directory
-3. Run: `mvn clean install`
-4. Run: `mvn exec:java -Dexec.mainClass="com.marklogic.analyser.Server"`
+```bash
+./gradlew run
+```
 
 Then go to [http://localhost:9997](http://localhost:9997)
 
 ### To run "permanently" as a background task on a given host
 
-1. Run: nohup mvn exec:java -Dexec.mainClass="com.marklogic.analyser.Server" &
+```bash
+nohup ./gradlew run &
+```
 
 ### Configuration
 
