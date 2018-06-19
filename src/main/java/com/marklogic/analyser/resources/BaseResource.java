@@ -10,8 +10,6 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
@@ -28,10 +26,9 @@ public class BaseResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseResource.class);
 
-    public List<File> files = new ArrayList<File>();
+    // public List<File> files = new ArrayList<File>();
 
-    public BaseResource() {
-
+    BaseResource() {
         // TODO - this should detect WHETHER ML is installed and if not, do no further analysis - just open the app with no data!
         //ResourceConfig rc = ServletContainer.getConfiguration();
         // is this a first run?
@@ -44,15 +41,11 @@ public class BaseResource {
             } else if (Os.isMac()) {
                 analysePath(Consts.DIRECTORY_PATH_OSX);
             }
-            // TODO - Add Solaris support one day?
             ConfigParams cp = ConfigParams.getInstance();
             cp.setFirstRun(false);
             ConfigParams.setInstance(cp);
         }
     }
-
-
-//	public List<PStackFrame> pstacks = PStackMovies.getInstance();
 
     /**
      * Attempt to make sure input is an integer.
@@ -61,7 +54,7 @@ public class BaseResource {
      *             segment)
      * @return true or false
      */
-    protected boolean canBeParsedAsInteger(String text) {
+    private boolean canBeParsedAsInteger(String text) {
         try {
             new Integer(text);
             return true;
@@ -74,14 +67,12 @@ public class BaseResource {
      * Freemarker template parameter map for the HTTP Exception Page template
      * (exception.ftl)
      *
-     * @param statusCode
-     * @param message
-     * @return
+     * @param message - the message
+     * @return a map containing all the information needed to render the page
      */
-    protected Map<String, Object> createExceptionModel(int statusCode,
-                                                       String message) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("title", String.valueOf(statusCode));
+    private Map<String, Object> createExceptionModel(String message) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("title", String.valueOf(500));
         map.put("message", message);
         return map;
     }
@@ -116,11 +107,11 @@ public class BaseResource {
      * @param message
      * @return
      */
-    protected Response wrapViewableExceptionResponse(String message) {
+    private Response wrapViewableExceptionResponse(String message) {
         LOG.error(MessageFormat.format("Exception encountered: {0}", message));
         return Response
                 .status(500)
-                .entity(new Viewable("/exception", createExceptionModel(500,
+                .entity(new Viewable("/exception", createExceptionModel(
                         message))).build();
     }
 
@@ -138,8 +129,8 @@ public class BaseResource {
     }
 
 
-    protected void analysePath(String path) {
-        LOG.info("Working with file path: " + path);
+    private void analysePath(String path) {
+        LOG.debug("Working with file path: " + path);
         // This should be a singleton!
         FileProcessManager fpm = new FileProcessManager();
         File file = new File(path);
@@ -151,7 +142,7 @@ public class BaseResource {
                 try {
                     fpm.processLog(file2);
                 } catch (IOException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    e.printStackTrace();
                 }
             }
         }

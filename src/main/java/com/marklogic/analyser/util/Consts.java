@@ -16,7 +16,7 @@ public class Consts {
     //public static String DIRECTORY_PATH_OSX = "~/Library/Application\\ Support/MarkLogic/Data/Logs";
     public static String DIRECTORY_PATH_OSX = "/tmp";
     public static int RESTART_TOTAL_LINES = 10;
-    public static int GRIZZLY_HTTP_PORT = 9997;
+    public static int GRIZZLY_HTTP_PORT = 9977;
     public static String HOST_OS = System.getProperty("os.name").toLowerCase();
     public static int MAX_LINES_FOR_LOG_PREVIEW = 15000;
     public static String FORMAT = "%-25s%s%n";

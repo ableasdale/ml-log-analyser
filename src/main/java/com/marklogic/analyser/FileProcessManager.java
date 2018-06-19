@@ -141,8 +141,12 @@ public class FileProcessManager {
                     restarts.add("------------");
                 }
 
-                // Find evidence of a stack trace
-                if (l.contains("#") && l.contains(" 0x") && l.contains(" in ")) {// !(l.contains("&#") || l.contains("&amp;#") ) ) {
+                // Find evidence of memory information logged
+                if (l.contains("Info: Memory")) {
+                    LOG.debug("Memory utilisation details found %s", l);
+                    checkAndAddItem(otherMessages, "Memory", l);
+                    // Find evidence of a stack trace
+                } else if (l.contains("#") && l.contains(" 0x") && l.contains(" in ")) {// !(l.contains("&#") || l.contains("&amp;#") ) ) {
                     LOG.debug(String.format("Crash dump found: %s", l));
                     checkAndAddItem(otherMessages, "Crash", l);
                 } else if (l.contains("AuditEvent")) {

@@ -14,7 +14,4 @@ public class Os {
         return Consts.HOST_OS.startsWith("mac") || Consts.HOST_OS.startsWith("darwin");
     }
 
-    public static boolean isSolaris() {
-        return Consts.HOST_OS.indexOf("sunos") >= 0;
-    }
 }

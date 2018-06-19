@@ -12,7 +12,6 @@
         <#else>
         <h3>No ErrorLog / Messages files are available <small>Use the upload form to start</small></h3>
         </#if>
-
     </div>
 
 <#if errorlog??>
@@ -24,18 +23,16 @@
         <#assign el = errorlog.getOtherMessages()>
         <#assign elkeys = el?keys>
         <#list elkeys as elkey>
-    <dt><a href="/search/${elkey}" title="Search all Logs for ${elkey} messages">${elkey}</a></dt>
-    <dd>${el[elkey]?size}</dd>
+            <dt><a href="/search/${elkey}" title="Search all Logs for ${elkey} messages">${elkey}</a></dt>
+            <dd>${el[elkey]?size}</dd>
         </#list>
 
         <#assign el = errorlog.getOccurrenceMap()>
         <#assign elkeys = el?keys>
-
             <#list elkeys as elkey>
                 <dt><a href="/search/${elkey}" title="Search all Logs for ${elkey} messages">${elkey}</a></dt>
                 <dd>${el[elkey]?size}</dd>
             </#list>
-
         </dl>
     </div>
 
@@ -52,7 +49,7 @@
             <div class="form-group">
                 <label for="${elkey}"><a href="/search/${elkey}" title="Search all Logs for ${elkey} messages">${elkey}</a>: (${itemlist?size} line[s])</label>
                 <textarea class="form-control" rows="5" id="${elkey}"><#list itemlist as item>${item}
-</#list></textarea>
+        </#list></textarea>
             </div>
         </#list>
 
