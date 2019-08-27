@@ -18,6 +18,10 @@ repositories {
 }
 
 dependencies {
+    // Required for Java 9 to hide large stacktraces
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+    compile group: 'javax.activation', name: 'activation', version: '1.1.1'
+    
     compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.2.3'
     compile group: 'commons-io', name: 'commons-io', version:'2.6'
     compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-grizzly2-http', version:'2.27'
