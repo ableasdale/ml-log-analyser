@@ -19,7 +19,7 @@ The application will summarise restarts, all known exceptions thrown, trace even
 ./gradlew run
 ```
 
-Then go to [http://localhost:9997](http://localhost:9997)
+Then go to [http://localhost:9977](http://localhost:9977)
 
 ### To run "permanently" as a background task on a given host
 
